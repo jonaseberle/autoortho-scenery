@@ -14,6 +14,8 @@ ZIPS=$(TILE_ZIPS)
 TILE_FILES = $(addsuffix .dsf, $(addprefix Ortho4XP/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list.$* ) ) ) )
 #TILE_FILES = $(basename $(shell cat $(TILENAME)_tile_list.$* ) )
 
+# Can't currently deal with concurrency in var/cache/elevation-data.7z.001 and everything that calls sub-makes
+.NOTPARALLEL:
 
 all: $(ZIPS)
 
@@ -47,6 +49,57 @@ Ortho4XP:
 	cp extract_overlay.py $@/.
 	cp Ortho4XP.cfg $@/.
 	mkdir $@/tmp
+	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
+	mkdir -p $@/Elevation_data && cd $@/Elevation_data \
+		&& bash -c 'for lat in {-9..9}; do for lon in {-18..18}; do ln -snfr ./ "./$$(printf "%+d0%+03d0" "$$lat" "$$lon")"; done; done'
+
+var/run/%.hgtForCoordsAndNeighbours:
+	# remove leading zeroes in +012 because $$(()) would interprete it as octal
+	coords=$$(basename $@ .hgtForCoordsAndNeighbours) \
+		&& echo "Prepare elevation data for $$coords and neighbours" \
+        && lat=$$(echo $$coords | grep -Eo '^.{3}' | sed -E 's/([+-])0+/\1/') \
+		&& lon=$$(echo $$coords | grep -Eo '.{4}$$' | sed -E 's/([+-])0+/\1/') \
+		&& minLat=$$(($$lat -1)) \
+		&& maxLat=$$(($$lat +1)) \
+		&& minLon=$$(($$lon -1)) \
+        && maxLon=$$(($$lon +1)) \
+		&& $(MAKE) -f $(lastword $(MAKEFILE_LIST)) \
+			var/run/$$(printf "%+03d%+04d" "$$minLat" "$$minLon").hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$lat"    "$$minLon").hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$maxLat" "$$minLon").hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$minLat" "$$lon"   ).hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$lat"    "$$lon"   ).hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$maxLat" "$$lon"   ).hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$minLat" "$$maxLon").hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$lat"    "$$maxLon").hgtForCoords \
+			var/run/$$(printf "%+03d%+04d" "$$maxLat" "$$maxLon").hgtForCoords \
+	;
+	mkdir -p $(dir $@)
+	touch $@
+
+var/run/%.hgtForCoords:
+	hgt=$$(echo $* | sed -e 's/^+/N/' -e 's/^-/S/' -e 's/-/W/' -e 's/+/E/').hgt \
+		&& echo "Extracting $$hgt" \
+		&& $(MAKE) -f Makefile.tiles Ortho4XP/Elevation_data/$$hgt
+	mkdir -p $(dir $@)
+	touch $@
+
+# unzipping all Sonny LiDAR would be 27GB and we do not have that much space in Github runners (only 14GB is promised)
+Ortho4XP/Elevation_data/%.hgt: var/cache/elevation-data.7z.001 Ortho4XP
+	hgt=$(notdir $@) \
+		&& 7z x -y -oOrtho4XP/Elevation_data var/cache/elevation-data.7z.001 "$$hgt" > /dev/null \
+		&& ( [ -f $@ ] && touch $@ ) || true
+
+var/cache/elevation-data.7z.001:
+	@echo "Download zipped elevation data..."
+	mkdir -p $(dir $@)
+	cd $(dir $@) \
+		&& curl --silent -L \
+			-H "Accept: application/vnd.github+json" \
+			-H "X-GitHub-Api-Version: 2022-11-28" \
+			https://api.github.com/repos/jonaseberle/autoortho-scenery/releases/tags/v0.0.0-assets \
+		| jq -r '.assets[] | select(.name | test("elevation-data\\.7z")) .browser_download_url' \
+		| xargs wget --continue --no-verbose
 
 
 #$(TILENAME)_tile_list.%: $(TILENAME)_tile_list_chunks
@@ -63,8 +116,8 @@ $(TILENAME)_tile_list_chunks: $(TILENAME)_tile_list
 #%.dsf: Ortho4XP/Tiles/zOrtho4XP_%/.done
 #	echo $<
 #Ortho4XP/Tiles/zOrtho4XP_%/.done: Ortho4XP 
-Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP
-	@echo "Make tile $*"	
+Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/%.hgtForCoordsAndNeighbours
+	@echo "Make tile $*"
 	@echo "Setup per tile config, if possible"
 	mkdir -p Ortho4XP/Tiles/zOrtho4XP_$*
 	-cp Ortho4XP_$*.cfg Ortho4XP/Tiles/zOrtho4XP_$*/.
@@ -72,7 +125,7 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP
 	set -e;\
 	export COORDS=$$(echo $(@) | sed -e 's/.*\/\([-+][0-9]\+\)\([-+][0-9]\+\).dsf/\1 \2/g');\
 	echo $$COORDS; \
- 	cd $< && python3 Ortho4XP_v130.py $$COORDS BI $(ZL) || ( echo "ERROR DETECTED! Retry tile $@ with noroads config."; cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/Ortho4XP/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg && python3 Ortho4XP_v130.py $$COORDS BI $(ZL) )
+	cd Ortho4XP && python3 Ortho4XP_v130.py $$COORDS BI $(ZL) || ( echo "ERROR DETECTED! Retry tile $@ with noroads config."; cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/Ortho4XP/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg && python3 Ortho4XP_v130.py $$COORDS BI $(ZL) )
 	#touch $@
 
 .SECONDARY: $(TILE_FILES) 
@@ -90,6 +143,7 @@ $(ZIPS): z_%.zip: z_%
 
 clean:
 	-rm -rf Ortho4XP
+	-rm -rf var/run
 	-rm $(ZIPS)
-	-rm -rf z_$(TILENAME)
+	-rm -rf z_$(TILENAME)*
 	-rm $(TILENAME)_tile_list.*
