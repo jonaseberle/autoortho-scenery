@@ -149,7 +149,11 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation
 			echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
 			cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/Ortho4XP/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& python3 Ortho4XP_v130.py $$COORDS BI $(ZL) 2>&1 | grep -v 'is deprecated' \
-		)
+		);
+
+zOrtho4XP_%.zip: Ortho4XP/Tiles/*/*/*/%.dsf
+	@echo "[$@]"
+	@cd Ortho4XP/Tiles/zOrtho4XP_$* && zip -r ../../../$@ .
 
 .SECONDARY: $(TILE_FILES) 
 
