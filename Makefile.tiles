@@ -148,13 +148,13 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation
 			&& python3 Ortho4XP_v130.py $$COORDS BI $(ZL) 2>&1 | grep -v 'is deprecated' \
 		);
 
-var/run/z_aosingle_%: Ortho4XP/Tiles/*/*/*/%.dsf
+var/run/z_ao__single_%: Ortho4XP/Tiles/*/*/*/%.dsf
 	@echo "[$@]"
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_$*/ var/run/z_aosingle_$*
+	@cp -r Ortho4XP/Tiles/zOrtho4XP_$*/ var/run/z_ao__single_$*
 
-z_aosingle_%.zip: var/run/z_aosingle_%
+z_ao__single_%.zip: var/run/z_ao__single_%
 	@echo "[$@]"
-	@cd var/run/ && zip -r ../../$@ z_aosingle_$*/
+	@cd var/run/ && zip -r ../../$@ z_ao__single_$*/
 
 .SECONDARY: $(TILE_FILES) 
 
@@ -177,7 +177,7 @@ clean:
 	-rm -rf var/run
 	-rm -f $(ZIPS)
 	-rm -rf z_$(TILENAME)*
-	-rm -rf z_aosingle_*
+	-rm -rf z_ao__single_*
 	-rm -f $(TILENAME)_tile_list.*
 
 distclean: clean
