@@ -1,9 +1,14 @@
 # Requires Github CLI (gh) command to facilitate authenticated requests to the API
 #
 # Quick start:
-# make -f Makefile.tiles clean 
-# make -f Makefile.tiles test_tile_list_chunks
-# make -f Makefile.tiles -j $(nproc --ignore=2)
+#   Generate tile set:
+#     export TILENAME=test # or na, afr, eur, ...
+#     make -f Makefile.tiles clean
+#     make -f Makefile.tiles ${TILENAME}_tile_list_chunks
+#     make -f Makefile.tiles -j $(nproc --ignore=2)
+#
+#   Generate single tile:
+#     make -f Makefile.tiles z_ao__single_+78+015.zip
 
 # @todo: make release in kubilus/autoortho-scenery, see ./bin/prepareAssetsElevationData
 ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery/releases/tags/elevation-v0.0.1
