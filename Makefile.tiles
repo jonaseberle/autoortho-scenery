@@ -10,6 +10,10 @@
 #   Generate single tile:
 #     make -f Makefile.tiles z_ao__single_+78+015.zip
 
+# remove make builtin rules for more useful make -d 
+MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS += --no-builtin-variables
+
 # @todo: make release in kubilus/autoortho-scenery, see ./bin/prepareAssetsElevationData
 ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery/releases/tags/elevation-v0.0.1
 SPLITSIZE?=125
