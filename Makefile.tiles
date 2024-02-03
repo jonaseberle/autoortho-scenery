@@ -35,6 +35,7 @@ CP:=)
 # Get the tiles listed in each list file
 .SECONDEXPANSION:
 TILE_FILES = $(addsuffix .dsf, $(addprefix Ortho4XP/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list.$* 2>/dev/null ) ) ) )
+TILE_FILES_ALL = $(addsuffix .dsf, $(addprefix Ortho4XP/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list 2>/dev/null ) ) ) )
 
 all: $(ZIPS)
 
@@ -45,6 +46,12 @@ all: $(ZIPS)
 #
 # Work on tile lists
 #
+z_$(TILENAME): $(TILENAME)_tile_list $${TILE_FILES_ALL}
+	@echo "[$@]"
+	@mkdir -p $@
+	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/'Earth nav data' $@/.
+	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/terrain $@/.
+	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/textures $@/
 
 z_$(TILENAME)_%: $(TILENAME)_tile_list.% $${TILE_FILES}
 	@echo "[$@]"
