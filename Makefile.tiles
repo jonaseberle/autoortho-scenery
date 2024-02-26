@@ -176,7 +176,7 @@ var/run/z_ao__single_%: Ortho4XP/Tiles/*/*/*/%.dsf
 
 z_ao__single_%.zip: var/run/z_ao__single_%
 	@echo "[$@]"
-	@cd var/run/ && zip -r ../../$@ z_ao__single_$*/
+	@cd var/run/z_ao__single_$* && zip -r ../../../$@ .
 
 .SECONDARY: $(TILE_FILES) 
 
