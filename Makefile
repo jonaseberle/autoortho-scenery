@@ -3,12 +3,12 @@
 # Quick start:
 #   Generate tile set:
 #     export TILENAME=test # or na, afr, eur, ...
-#     make -f Makefile.tiles clean
-#     make -f Makefile.tiles ${TILENAME}_tile_list_chunks
-#     make -f Makefile.tiles -j $(nproc --ignore=2)
+#     make clean
+#     make ${TILENAME}_tile_list_chunks
+#     make -j $(nproc --ignore=2)
 #
 #   Generate single tile:
-#     make -f Makefile.tiles z_ao__single_+78+015.zip
+#     make z_ao__single_+78+015.zip
 
 # remove make builtin rules for more useful make -d 
 MAKEFLAGS += --no-builtin-rules

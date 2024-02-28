@@ -42,15 +42,15 @@ jobs:
       
       - name: Test
         run: |
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.setname }}_tile_list_chunks
-          TILENAME=${{ inputs.setname }} make -n -f Makefile.tiles ${{ inputs.zip }}
+          TILENAME=${{ inputs.setname }} make ${{ inputs.setname }}_tile_list_chunks
+          TILENAME=${{ inputs.setname }} make -n ${{ inputs.zip }}
 
       - name: Build
         id: build
         run: |
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.setname }}_tile_list_chunks
-          TILENAME=${{ inputs.setname }} timeout 300m make -f Makefile.tiles ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
-          TILENAME=${{ inputs.tileset }} make -f Makefile.tiles ${{ inputs.zip }}.sha256
+          TILENAME=${{ inputs.setname }} make ${{ inputs.setname }}_tile_list_chunks
+          TILENAME=${{ inputs.setname }} timeout 300m make ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
+          TILENAME=${{ inputs.tileset }} make ${{ inputs.zip }}.sha256
           
       - name: Show work
         if: steps.build.outputs.done == 'true'
@@ -59,7 +59,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           #unzip -l ${{ inputs.zip }} *.dsf >> $GITHUB_STEP_SUMMARY
           echo "COMPLETED?: ${{ steps.build.outputs.done }}" >> $GITHUB_STEP_SUMMARY
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
+          TILENAME=${{ inputs.setname }} make ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo '---' >> $GITHUB_STEP_SUMMARY
 
@@ -121,9 +121,9 @@ jobs:
       - name: ReBuild1
         id: rebuild
         run: |
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.setname }}_tile_list_chunks
-          TILENAME=${{ inputs.setname }} timeout 300m make -f Makefile.tiles ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
-          TILENAME=${{ inputs.tileset }} make -f Makefile.tiles ${{ inputs.zip }}.sha256
+          TILENAME=${{ inputs.setname }} make ${{ inputs.setname }}_tile_list_chunks
+          TILENAME=${{ inputs.setname }} timeout 300m make ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
+          TILENAME=${{ inputs.tileset }} make ${{ inputs.zip }}.sha256
           
       - name: Show work
         if: steps.rebuild.outputs.done == 'true'
@@ -132,7 +132,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           #unzip -l ${{ inputs.zip }} *.dsf >> $GITHUB_STEP_SUMMARY
           echo "COMPLETED?: ${{ steps.rebuild.outputs.done }}" >> $GITHUB_STEP_SUMMARY
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
+          TILENAME=${{ inputs.setname }} make ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo '---' >> $GITHUB_STEP_SUMMARY
 
@@ -194,9 +194,9 @@ jobs:
       - name: ReBuild2
         id: rebuild
         run: |
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.setname }}_tile_list_chunks
-          TILENAME=${{ inputs.setname }} timeout 300m make -f Makefile.tiles ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
-          TILENAME=${{ inputs.tileset }} make -f Makefile.tiles ${{ inputs.zip }}.sha256
+          TILENAME=${{ inputs.setname }} make ${{ inputs.setname }}_tile_list_chunks
+          TILENAME=${{ inputs.setname }} timeout 300m make ${{ inputs.zip }}.info && echo "done=true" >> "$GITHUB_OUTPUT" || echo "done=false" >> "$GITHUB_OUTPUT"
+          TILENAME=${{ inputs.tileset }} make ${{ inputs.zip }}.sha256
           
       - name: Show work
         if: steps.rebuild.outputs.done == 'true'
@@ -205,7 +205,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           #unzip -l ${{ inputs.zip }} *.dsf >> $GITHUB_STEP_SUMMARY
           echo "COMPLETED?: ${{ steps.rebuild.outputs.done }}" >> $GITHUB_STEP_SUMMARY
-          TILENAME=${{ inputs.setname }} make -f Makefile.tiles ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
+          TILENAME=${{ inputs.setname }} make ${{ inputs.zip }}.info >>  $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo '---' >> $GITHUB_STEP_SUMMARY
 
