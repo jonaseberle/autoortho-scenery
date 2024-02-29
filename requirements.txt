@@ -15,7 +15,9 @@ cython==3.0.8
 idna==2.10
     # via requests
 numpy==1.23.5
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   scikit-fmm
 pillow==10.2.0
     # via -r requirements.in
 pyproj==3.4.1
@@ -23,6 +25,8 @@ pyproj==3.4.1
 requests==2.31.0
     # via -r requirements.in
 rtree==0.9.7
+    # via -r requirements.in
+scikit-fmm==2023.4.2
     # via -r requirements.in
 shapely==1.8.5
     # via -r requirements.in
