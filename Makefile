@@ -206,5 +206,5 @@ distclean: clean
 	@echo "[$@]"
 	-rm -rf Ortho4XP
 	-rm -rf var
-	-rm -f z_*
+	-rm -rf z_*
 	-rm -f *_tile_list.*
