@@ -8,12 +8,16 @@ certifi==2023.7.22
     # via
     #   pyproj
     #   requests
+chardet==4.0.0
+    # via -r requirements.in
 charset-normalizer==3.3.2
     # via requests
 cython==3.0.8
     # via -r requirements.in
 idna==2.10
-    # via requests
+    # via
+    #   -r requirements.in
+    #   requests
 numpy==1.23.5
     # via
     #   -r requirements.in
@@ -28,7 +32,9 @@ rtree==0.9.7
     # via -r requirements.in
 scikit-fmm==2023.4.2
     # via -r requirements.in
-shapely==1.8.5
+shapely==1.7.1
     # via -r requirements.in
 urllib3==1.26.18
-    # via requests
+    # via
+    #   -r requirements.in
+    #   requests
