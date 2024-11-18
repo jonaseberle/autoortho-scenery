@@ -1,0 +1,22 @@
+#!/bin/bash
+# Outputs Makefile rules for elevations.
+# Ortho4XP uses all surrounding tiles' elevations for generation of a tile.
+# The generated rules look like this:
+# var/run/neighboursOfTile_+12+123.elevation: var/run/tile_+12+123.elevation ... |$(@D)
+
+# saner programming env: these switches turn some bugs into errors
+set -o errexit -o pipefail -o noclobber -o nounset
+
+minLat="$1"
+maxLat="$2"
+minLon="$3"
+maxLon="$4"
+
+tiles=""
+for lat in $(seq "$minLat" "$maxLat"); do
+	for lon in $(seq "$minLon" "$maxLon"); do
+		tiles="$tiles z_ao__single_$(printf "%+03d%+04d" "$lat" "$lon").zip"
+	done
+done
+
+echo "$tiles"
