@@ -24,7 +24,7 @@ jobs:
       TZ: America/NewYork
       GH_TOKEN: ${{ github.token }}
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     outputs:
       done: ${{ steps.build.outputs.done }}
@@ -88,7 +88,7 @@ jobs:
   rerun:
     if: needs.build.outputs.done == 'false'
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       DEBIAN_FRONTEND: noninteractive
       TZ: America/NewYork
@@ -161,7 +161,7 @@ jobs:
   rerun2:
     if: needs.rebuild.outputs.done == 'false'
     needs: rerun
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       DEBIAN_FRONTEND: noninteractive
       TZ: America/NewYork
