@@ -18,7 +18,7 @@ MAKEFLAGS += --no-builtin-variables
 ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery/releases/tags/elevation-v0.0.1
 SPLITSIZE?=125
 SHELL=/bin/bash
-ZL?=17
+ZL?=16
 
 TILENAME?=test
 
