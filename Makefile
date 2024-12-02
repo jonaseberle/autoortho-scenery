@@ -150,7 +150,7 @@ var/run/Makefile.elevationRules: | $$(@D)/
 	@bin/genMakefileElevationRules > $@
 include var/run/Makefile.elevationRules
 
-var/run/tile_%.elevation: Ortho4XP var/cache/elevation/elevation_%.zip Ortho4XP | $$(@D)/
+var/run/tile_%.elevation: var/cache/elevation/elevation_%.zip Ortho4XP | $$(@D)/
 	@# Unzips if file not empty, but fails on unzip error.
 	@# Ignores the .zip if empty
 	@if [ -s "var/cache/elevation/elevation_$*.zip" ]; then \
