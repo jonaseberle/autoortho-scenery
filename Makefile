@@ -1,4 +1,6 @@
-# Requires Github CLI (gh) command to facilitate authenticated requests to the API
+# Requires:
+# * Github CLI (gh) command to facilitate authenticated requests to the API
+# * pipenv (for otv)
 #
 # Quick start:
 #   Generate tile set:
@@ -140,6 +142,15 @@ Ortho4XP:
 		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename {} .hgt)).hgt"' \;
 
 #
+# otv (Tile Checker)
+#
+
+otv:
+	@echo "[$@]"
+	git clone --single-branch --branch develop --depth=1 https://github.com/jonaseberle/otv.git
+	PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv install
+
+#
 # Custom tile elevation
 #
 
@@ -194,7 +205,7 @@ $(TILENAME)_tile_list_chunks: $(TILENAME)_tile_list
 # Tile pack setup
 #
 
-Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation
+Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation otv
 	@echo [$@]
 	@mkdir -p Ortho4XP/Tiles/zOrtho4XP_$*
 	@echo "Setup per tile config, if possible"
@@ -205,16 +216,19 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation
 		&& hgtLon="$$(grep -Eo '.{4}$$' <<< $* | tr "+" "E" | tr "-" "W")" \
 		&& hgtFilePath=Ortho4XP/Elevation_data/"$$hgtLat$$hgtLon".hgt \
 		&& ( [ -e "$$hgtFilePath" ] && ls -sh "$$hgtFilePath" || true )
-	# this silences deprecation warnings in Ortho4XP for more concise output
-	@set -e;\
-	export COORDS=$$(echo $(@) | sed -e 's/.*\/\([-+][0-9]\+\)\([-+][0-9]\+\).dsf/\1 \2/g');\
+	@# this silences deprecation warnings in Ortho4XP for more concise output
+	@set -e; \
+	export COORDS=$$(echo $(@) | sed -e 's/.*\/\([-+][0-9]\+\)\([-+][0-9]\+\).dsf/\1 \2/g'); \
 	cd Ortho4XP \
-		&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1 \
-		|| ( \
+		&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1; \
+		[ -e Tiles/*/*/*/$*.dsf ] || ( \
 			echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
 			cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/Ortho4XP/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1 \
-		);
+		)
+	@[ -e Ortho4XP/Tiles/*/*/*/$*.dsf ] \
+		 && PIPENV_PIPFILE=./otv/Pipfile pipenv run ./otv/bin/otv --all --ignore-textures --no-progress \
+			"$$(dirname Ortho4XP/Tiles/*/*/*/$*.dsf)/../.."
 
 var/run/z_ao__single_%: Ortho4XP/Tiles/*/*/*/%.dsf
 	@echo "[$@]"

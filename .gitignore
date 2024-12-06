@@ -1,6 +1,7 @@
 *~
 *.swp
-Ortho4XP
+/Ortho4XP/
+/otv/
 *_tile_list.*
 /var/
 /.venv/
