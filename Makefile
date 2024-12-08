@@ -74,10 +74,6 @@ z_$(TILENAME)_%.zip.info: z_$(TILENAME)_%.zip
 # Ortho4XP setup
 #
 
-ortho4xp.diff:
-	@echo "[$@]"
-	cd Ortho4XP && git diff > ../ortho4xp.diff
-
 Ortho4XP:
 	@echo "[$@]"
 	git clone --depth=1 https://github.com/oscarpilote/Ortho4XP.git
