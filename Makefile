@@ -223,7 +223,7 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation otv
 			&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1 \
 		)
 	@[ -e Ortho4XP/Tiles/*/*/*/$*.dsf ] \
-		 && PIPENV_PIPFILE=./otv/Pipfile pipenv run ./otv/bin/otv --all --ignore-textures --no-progress \
+		 && PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress \
 			"$$(dirname Ortho4XP/Tiles/*/*/*/$*.dsf)/../.."
 
 var/run/z_ao__single_%: Ortho4XP/Tiles/*/*/*/%.dsf
