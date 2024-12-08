@@ -36,8 +36,8 @@ CP:=)
 
 # Get the tiles listed in each list file
 .SECONDEXPANSION:
-TILE_FILES = $(addsuffix .dsf, $(addprefix Ortho4XP/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list.$* 2>/dev/null ) ) ) )
-TILE_FILES_ALL = $(addsuffix .dsf, $(addprefix Ortho4XP/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list 2>/dev/null ) ) ) )
+TILE_FILES = $(addsuffix .dsf, $(addprefix build/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list.$* 2>/dev/null ) ) ) )
+TILE_FILES_ALL = $(addsuffix .dsf, $(addprefix build/Tiles/*/*/*/, $(basename $(shell cat $(TILENAME)_tile_list 2>/dev/null ) ) ) )
 
 all: $(ZIPS)
 
@@ -52,9 +52,9 @@ all: $(ZIPS)
 z_$(TILENAME): $(TILENAME)_tile_list $${TILE_FILES_ALL}
 	@echo "[$@]"
 	@mkdir -p $@
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/'Earth nav data' $@/.
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/terrain $@/.
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/textures $@/
+	@cp -r build/Tiles/zOrtho4XP_*/'Earth nav data' $@/.
+	@cp -r build/Tiles/zOrtho4XP_*/terrain $@/.
+	@cp -r build/Tiles/zOrtho4XP_*/textures $@/
 
 z_$(TILENAME)_%: $(TILENAME)_tile_list.% $${TILE_FILES}
 	@echo "[$@]"
@@ -77,10 +77,15 @@ z_$(TILENAME)_%.zip.info: z_$(TILENAME)_%.zip
 
 Ortho4XP:
 	@echo "[$@]"
-	git clone --depth=1 https://github.com/oscarpilote/Ortho4XP.git
-	cp extract_overlay.py $@/.
-	cp Ortho4XP.cfg $@/.
-	@mkdir $@/tmp
+	[ -d $@ ] && rm -rf $@
+	git clone --depth=1 https://github.com/oscarpilote/Ortho4XP.git $@
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Tiles/
+	@cp Ortho4XP.cfg $@/.
+	#@mkdir $@/tmp
+	@cd $@/ \
+		&& ln -s ../build/* .
+
+build/Elevation_data/: | $$(@D)/
 	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
 	@mkdir -p $@/Elevation_data && cd $@/Elevation_data \
 		&& bash -c 'for lat in {-9..9}; do for lon in {-18..18}; do ln -snfr ./ "./$$(printf "%+d0%+03d0" "$$lat" "$$lon")"; done; done'
@@ -134,8 +139,8 @@ Ortho4XP:
 			http://viewfinderpanoramas.org/dem1/P23.zip \
 			http://viewfinderpanoramas.org/dem1/R24.zip \
 			http://viewfinderpanoramas.org/dem1/O23.zip \
-		&& unzip -jo -d ../../../Ortho4XP/Elevation_data -o '*.zip' \
-		&& cd ../../../Ortho4XP/Elevation_data \
+		&& unzip -jo -d ../../../build/Elevation_data -o '*.zip' \
+		&& cd ../../../build/Elevation_data \
 		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename {} .hgt)).hgt"' \;
 
 #
@@ -158,12 +163,12 @@ var/run/Makefile.elevationRules: | $$(@D)/
 	@bin/genMakefileElevationRules > $@
 include var/run/Makefile.elevationRules
 
-var/run/tile_%.elevation: var/cache/elevation/elevation_%.zip Ortho4XP | $$(@D)/
+var/run/tile_%.elevation: var/cache/elevation/elevation_%.zip Ortho4XP build/Elevation_data/ | $$(@D)/
 	@# Unzips if file not empty, but fails on unzip error.
 	@# Ignores the .zip if empty
 	@if [ -s "var/cache/elevation/elevation_$*.zip" ]; then \
 		printf "[$@] unzipping custom elevation: %s\n" \
-			"$$(unzip -o -d Ortho4XP/Elevation_data/ var/cache/elevation/elevation_$*.zip | tr "\n" " | ")"; \
+			"$$(unzip -o -d build/Elevation_data/ var/cache/elevation/elevation_$*.zip | tr "\n" " | ")"; \
 	else \
 		echo "[$@] no custom elevation for this tile"; \
 	fi
@@ -202,16 +207,15 @@ $(TILENAME)_tile_list_chunks: $(TILENAME)_tile_list
 # Tile pack setup
 #
 
-Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation otv
+build/Tiles/*/*/*/%.dsf: Ortho4XP build/Elevation_data/ var/run/neighboursOfTile_%.elevation otv
 	@echo [$@]
-	@mkdir -p Ortho4XP/Tiles/zOrtho4XP_$*
+	@mkdir -p build/Tiles/zOrtho4XP_$*
 	@echo "Setup per tile config, if possible"
 	@cp Ortho4XP_$*.cfg Ortho4XP/Tiles/zOrtho4XP_$*/. 2>/dev/null || true
 	@echo "Available elevation data for this tile before Ortho4XP run (25M is HD 1\", 2.8M is 3\"):"
-	@#ls Ortho4XP/Elevation_data/ -sh
 	@hgtLat="$$(grep -Eo '^.{3}' <<< $* | tr "+" "N" | tr "-" "S")" \
 		&& hgtLon="$$(grep -Eo '.{4}$$' <<< $* | tr "+" "E" | tr "-" "W")" \
-		&& hgtFilePath=Ortho4XP/Elevation_data/"$$hgtLat$$hgtLon".hgt \
+		&& hgtFilePath=build/Elevation_data/"$$hgtLat$$hgtLon".hgt \
 		&& ( [ -e "$$hgtFilePath" ] && ls -sh "$$hgtFilePath" || true )
 	@# this silences deprecation warnings in Ortho4XP for more concise output
 	@set -e; \
@@ -220,16 +224,16 @@ Ortho4XP/Tiles/*/*/*/%.dsf: Ortho4XP var/run/neighboursOfTile_%.elevation otv
 		&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1; \
 		[ -e Tiles/*/*/*/$*.dsf ] || ( \
 			echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
-			cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/Ortho4XP/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			cp $(CURDIR)/Ortho4XP_noroads.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& python3 Ortho4XP.py $$COORDS BI $(ZL) 2>&1 \
 		)
-	@[ -e Ortho4XP/Tiles/*/*/*/$*.dsf ] \
+	@[ -e build/Tiles/*/*/*/$*.dsf ] \
 		 && PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress \
-			"$$(dirname Ortho4XP/Tiles/*/*/*/$*.dsf)/../.."
+			"$$(dirname build/Tiles/*/*/*/$*.dsf)/../.."
 
-var/run/z_ao__single_%: Ortho4XP/Tiles/*/*/*/%.dsf
+var/run/z_ao__single_%: build/Tiles/*/*/*/%.dsf
 	@echo "[$@]"
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_$*/ var/run/z_ao__single_$*
+	@cp -r build/Tiles/zOrtho4XP_$*/ var/run/z_ao__single_$*
 
 z_ao__single_%.zip: var/run/z_ao__single_%
 	@echo "[$@]"
@@ -241,9 +245,9 @@ z_ao__single_%.zip: var/run/z_ao__single_%
 $(ZIPS): z_%.zip: z_%
 	@echo "[$@]"
 	@mkdir -p $<
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/'Earth nav data' $</.
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/terrain $</.
-	@cp -r Ortho4XP/Tiles/zOrtho4XP_*/textures $</.
+	@cp -r build/Tiles/zOrtho4XP_*/'Earth nav data' $</.
+	@cp -r build/Tiles/zOrtho4XP_*/terrain $</.
+	@cp -r build/Tiles/zOrtho4XP_*/textures $</.
 	@zip -r $@ $<
 	
 %.sha256: %		
@@ -252,7 +256,7 @@ $(ZIPS): z_%.zip: z_%
 
 clean:
 	@echo "[$@]"
-	-rm -rf Ortho4XP/Tiles/*
+	-rm -rf build/Tiles/*
 	-rm -rf var/run
 	-rm -f $(ZIPS)
 	-rm -rf z_$(TILENAME)*
@@ -262,6 +266,7 @@ clean:
 distclean: clean
 	@echo "[$@]"
 	-rm -rf Ortho4XP
+	-rm -rf build
 	-rm -rf var
 	-rm -rf z_*
 	-rm -f *_tile_list.*
