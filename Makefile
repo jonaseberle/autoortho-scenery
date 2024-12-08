@@ -43,6 +43,7 @@ all: $(ZIPS)
 
 # creates directories
 %/:
+	@echo "[$@]"
 	@mkdir -p $@
 
 #
