@@ -13,13 +13,16 @@ for lat in $(seq -90 90); do
 		for dLon in -1 0 1; do
 			for dLat in -1 0 1; do
 				_lat="$((lat + dLat))"
+				[ $_lat -lt -90 -o $_lat -gt 90 ] && continue
 				# wrap around although not needed in 100 years. Elevation data for the Aleutians anybody?
 				_lon="$(( ($lon + $dLon + 540) % 360 - 180))"
 				printf "var/run/tile_%+03d%+04d.elevation " "$_lat" "$_lon"
 			done
 		done
-		echo '|$(@D)'
+		echo
+		echo '	@touch $@'
 		echo '	@echo "[$@]"'
+		echo '	@mkdir -p var/run/'
 		echo '	@touch $@'
 	done
 done
