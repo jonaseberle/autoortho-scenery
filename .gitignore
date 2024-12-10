@@ -5,9 +5,12 @@
 *.swp
 /build/
 /Ortho4XP/
+/Ortho4XP-shred86/
+/Ortho4XP-v1.3/
+/o4xp_2_xp12/
+/xptools/
 /otv/
 *_tile_list.*
 /var/
-/.venv/
 /z_*_*/
 /z_*_*.zip
