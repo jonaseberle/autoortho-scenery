@@ -1,0 +1,20 @@
+#!/bin/bash
+# Outputs Makefile rules for tilelists.
+# var/run/eur_tiles: build/Tiles/*/*/*/+51-010.dsf ...
+
+# saner programming env: these switches turn some bugs into errors
+set -o errexit -o pipefail -o noclobber -o nounset
+
+for tilesetFilename in *_tile_list; do
+	tileset="$(basename "$tilesetFilename" _tile_list)"
+	printf "var/run/%s_tiles:" "$tileset"
+
+	for tileDsf in $(cat "$tilesetFilename"); do
+		printf "build/Tiles/*/*/*/%s " "$tileDsf"
+	done
+
+	echo
+	echo '	@echo "[$@]"'
+	echo '	mkdir -p var/run/'
+	echo '	@touch $@'
+done
