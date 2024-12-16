@@ -247,7 +247,7 @@ var/cache/elevation/elevation_%.zip: var/run/elevationRelease.json
 		fi
 
 #
-# Tiles
+# Build and test tile
 #
 
 build/Tiles/*/*/*/%.dsf: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation otv o4xp_2_xp12
