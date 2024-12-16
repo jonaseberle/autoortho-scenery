@@ -54,7 +54,7 @@ z_ao_%: %_tile_list var/run/%_tiles
 
 test_%: otv
 	@echo "[$@]"
-	@PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress $* \
+	@PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress build/Tiles/$* \
 
 #
 # Ortho4XP setup
@@ -283,7 +283,8 @@ build/Tiles/*/*/*/%.dsf: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation
 	);
 	@[ -e build/Tiles/*/*/*/$*.dsf ] \
 		&& cd "$(CURDIR)/build/Tiles/zOrtho4XP_$*/" \
-		&& PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress ./ \
+		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
+			$(CURDIR)/otv/bin/otv --all --ignore-textures --no-progress ./ \
 		&& rm -f Data* *.bak
 
 #
