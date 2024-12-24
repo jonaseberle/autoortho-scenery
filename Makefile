@@ -4,13 +4,15 @@
 #
 # Quick start:
 #   Generate tile set:
-#     make clean
 #     make z_ao_eur
-#     make -j $(nproc --ignore=2)
+#       or:
+#       nice make -j $(nproc --ignore=2) z_ao_eur
 #
 #   Generate single tile:
 #     make z_ao__single_+78+015
 #
+#   Stats:
+#     make stats
 #   Test:
 #     make test_+78+015
 
@@ -26,6 +28,19 @@ SHELL=/bin/bash
 # make chokes on () in shell commands
 OP:=(
 CP:=)
+
+stats:
+	@printf "%28s\n" missing
+	@for tiles in *_tile_list; do \
+		printf "%-20s %4d/%4d\n" \
+			"$$tiles" \
+			$$(comm --total -123 \
+				<(sort $$tiles) \
+				<(find build/Tiles/ -name '*.dsf' -printf "%f\n" | sort) | sed -E 's/([0-9]+)[\t]([0-9]+)[\t]([0-9]+).*/\1/') \
+			$$(wc -l $$tiles | cut -f1 -d' '); \
+		 done
+	@printf "\ngenerated_by:\n"
+	@sort build/Tiles/zOrtho4XP_*/_docs/generated_by* | uniq -c
 
 # creates directories
 %/:

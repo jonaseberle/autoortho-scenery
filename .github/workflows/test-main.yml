@@ -19,7 +19,7 @@ jobs:
       - name: Gen tile sub-lists
         id: chunks
         run: |
-          TILENAME=test make test_tile_list_chunks
+          make z_ao_test
           CHUNKS=$(ls test_tile_list.* | awk -F '.' '/.+/ { printf "%s\"z_test_%s.zip\"", sep, ""$2""; sep=", " }')
           echo "chunks={\"chunk\":[$CHUNKS]}" >> $GITHUB_OUTPUT
 
@@ -33,4 +33,4 @@ jobs:
     uses: ./.github/workflows/build-tiles.yml
     with:
       zip: ${{ matrix.chunk }}
-      setname: test     
+      setname: test
