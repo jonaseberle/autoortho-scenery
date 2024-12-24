@@ -37,7 +37,7 @@ CP:=)
 # tilesets and tiles
 #
 
-z_ao__single_%: build/Tiles/*/*/*/%.dsf
+z_ao__single_%: build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf
 	@echo "[$@]"
 	@cp -r build/Tiles/zOrtho4XP_$*/ z_ao__single_$*
 
@@ -250,7 +250,7 @@ var/cache/elevation/elevation_%.zip: var/run/elevationRelease.json
 # Build and test tile
 #
 
-build/Tiles/*/*/*/%.dsf: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation otv o4xp_2_xp12
+build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation otv o4xp_2_xp12
 	@echo [$@]
 	@mkdir -p build/Tiles/zOrtho4XP_$*
 	@# this silences deprecation warnings in Ortho4XP for more concise output
