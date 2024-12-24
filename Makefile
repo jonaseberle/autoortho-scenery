@@ -214,7 +214,7 @@ otv:
 
 # generates the targets var/run/neighboursOfTile_%.elevation with surrounding tiles' elevations 
 # as prerequisites (takes a little while, 360*180 rules):
-var/run/Makefile.elevationRules:
+var/run/Makefile.elevationRules: bin/genMakefileElevationRules
 	@mkdir -p var/run/
 	@echo "[$@]"
 	@bin/genMakefileElevationRules > $@
@@ -285,20 +285,24 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/generated_by_$*.txt \
 			&& cd $(CURDIR)/o4xp_2_xp12 \
 			&& . .venv/bin/activate \
-			&& python o4xp_2_xp12.py -subset $* -limit 1 -root ./ convert \
+			&& python o4xp_2_xp12.py -subset $* -limit 1 convert \
+			&& python o4xp_2_xp12.py -subset $* -limit 1 cleanup \
 			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/adjusted_by_$*.txt ;\
 	);
-	@[ -e build/Tiles/*/*/*/$*.dsf ] \
+	@set -x && [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 		&& cd "$(CURDIR)/build/Tiles/zOrtho4XP_$*/" \
+		&& pwd \
 		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
 			$(CURDIR)/otv/bin/otv --all --ignore-textures --no-progress ./ \
-		&& rm -f Data* *.bak
+		&& rm -f Data* *.bak \
+		&& mkdir -p _docs/ \
+		&& shopt -s nullglob && mv Ortho4XP_*.cfg generated_by_* adjusted_by_* _docs/
 
 #
 # Work on tile lists
 #
 
-var/run/Makefile.tilelistRules:
+var/run/Makefile.tilelistRules: bin/genMakefileTilelistRules
 	@mkdir -p var/run/
 	@echo "[$@]"
 	@bin/genMakefileTilelistRules > $@
