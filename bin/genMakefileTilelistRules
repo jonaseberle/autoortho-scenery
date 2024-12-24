@@ -10,7 +10,8 @@ for tilesetFilename in *_tile_list; do
 	printf "var/run/%s_tiles:" "$tileset"
 
 	for tileDsf in $(cat "$tilesetFilename"); do
-		printf "build/Tiles/*/*/*/%s " "$tileDsf"
+		tile="$(basename ./"$tileDsf" .dsf)"
+		printf "build/Tiles/zOrtho4XP_%s/Earth\\ nav\\ data/*/*.dsf " "$tile"
 	done
 
 	echo
