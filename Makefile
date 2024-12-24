@@ -262,13 +262,15 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 	@mkdir -p build/Tiles/zOrtho4XP_$*
 	@# this silences deprecation warnings in Ortho4XP for more concise output
 	@set -e; \
-	export COORDS=$$(echo $(@) | sed -e 's/.*\/\([-+][0-9]\+\)\([-+][0-9]\+\).dsf/\1 \2/g'); \
+	set -x; \
+	echo $(@); \
+	export COORDS=$$(echo $(@) | sed -e 's/.*\([-+][0-9]\+\)\([-+][0-9]\+\).*/\1 \2/g'); \
 	cd $(CURDIR)/Ortho4XP \
 		&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 		&& . .venv/bin/activate \
 		&& python3 Ortho4XP.py $$COORDS 2>&1 \
 		&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/generated_by_$*.txt ;\
-	[ -e Tiles/*/*/*/$*.dsf ] || ( \
+	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
 		cd $(CURDIR)/Ortho4XP \
 			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
@@ -276,7 +278,7 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/generated_by_$*.txt ;\
 	); \
-	[ -e Tiles/*/*/*/$*.dsf ] || ( \
+	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with Ortho4XP 1.3"; \
 		cd $(CURDIR)/Ortho4XP-v1.3 \
 			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
