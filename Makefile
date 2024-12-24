@@ -39,7 +39,8 @@ CP:=)
 
 z_ao__single_%: build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf
 	@echo "[$@]"
-	@cp -r build/Tiles/zOrtho4XP_$*/ z_ao__single_$*
+	@rm -rf $@/
+	@cp --force --link --recursive build/Tiles/zOrtho4XP_$*/ z_ao__single_$*/
 
 z_ao__single_%.zip: z_ao__single_%
 	@echo "[$@]"
@@ -47,10 +48,16 @@ z_ao__single_%.zip: z_ao__single_%
 
 z_ao_%: %_tile_list var/run/%_tiles
 	@echo "[$@]"
+	@rm -rf $@/
 	@mkdir -p $@
-	@dirs=""; for dsf in $$(cat $*_tile_list); do dirs="$$dirs zOrtho4XP_$$(basename $$dsf .dsf)/"; done \
-		&& cd build/Tiles \
-		&& rsync -av --delete $$dirs $(CURDIR)/$@/.
+	@cd build/Tiles \
+		&& set -x \
+		&& for dsf in $$(cat ../../$*_tile_list); do \
+			echo $$dsf \
+				&& dir=zOrtho4XP_$$(basename $$dsf .dsf) \
+				&& [ -e $$dir/"Earth nav data"/*/$$dsf ] \
+				&& cp --force --recursive --link $$dir/* $(CURDIR)/$@/. ; \
+		done
 
 test_%: otv
 	@echo "[$@]"
