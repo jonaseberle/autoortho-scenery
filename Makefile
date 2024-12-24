@@ -83,7 +83,7 @@ Ortho4XP-v1.3:
 	@cd $@/ \
 		&& git switch Progressive_130 \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
-		&& cp ../Ortho4XP-v1.3.cfg . \
+		&& cp ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
 		&& mkdir -p build/ \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles build/ \
 		&& python3 -m venv .venv \
