@@ -12,8 +12,7 @@
 #     make z_ao__single_+78+015
 #
 #   Test:
-#     make test_z_ao__single_+78+015
-#     make test_z_eur
+#     make test_+78+015
 
 # remove make builtin rules for more useful make -d 
 MAKEFLAGS += --no-builtin-rules
@@ -61,7 +60,7 @@ z_ao_%: %_tile_list var/run/%_tiles
 
 test_%: otv
 	@echo "[$@]"
-	@PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress build/Tiles/$* \
+	@PIPENV_PIPFILE=./otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run ./otv/bin/otv --all --ignore-textures --no-progress build/Tiles/zOrtho4XP_$* \
 
 #
 # Ortho4XP setup
