@@ -11,11 +11,11 @@ for tilesetFilename in *_tile_list; do
 
 	for tileDsf in $(cat "$tilesetFilename"); do
 		tile="$(basename ./"$tileDsf" .dsf)"
-		printf "build/Tiles/zOrtho4XP_%s/Earth\\ nav\\ data/*/*.dsf " "$tile"
+		printf "build/Tiles/zOrtho4XP_%s/_docs/checked_by_*.txt " "$tile"
 	done
 
 	echo
 	echo '	@echo "[$@]"'
-	echo '	mkdir -p var/run/'
+	echo '	@mkdir -p var/run/'
 	echo '	@touch $@'
 done
