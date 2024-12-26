@@ -291,7 +291,7 @@ var/cache/elevation/elevation_%.zip: var/run/elevationRelease.json
 # Build and test tile
 #
 
-build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf otv
+build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt otv
 	@echo [$@]
 	@cd $(CURDIR)/build/Tiles/zOrtho4XP_$* \
 		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
@@ -302,7 +302,7 @@ build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/Earth\ n
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
 	@echo [$@]
 	@mkdir -p $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
@@ -313,6 +313,7 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 		&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 		&& . .venv/bin/activate \
 		&& python3 Ortho4XP.py $$COORDS 2>&1 \
+		&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 		&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt; \
 	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
@@ -320,6 +321,7 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
+			&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	); \
 	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
@@ -328,13 +330,14 @@ build/Tiles/zOrtho4XP_%/Earth\ nav\ data/*/*.dsf: Ortho4XP Ortho4XP-shred86 Orth
 			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
-			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
+			&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 			&& cd $(CURDIR)/o4xp_2_xp12 \
 			&& . .venv/bin/activate \
 			&& python o4xp_2_xp12.py -subset $* -limit 1 convert \
 			&& python o4xp_2_xp12.py -subset $* -limit 1 cleanup \
 			&& rm -f $(CURDIR)/build/Tiles/zOrtho4XP_$*/"Earth nav data"/*/*.dsf-o4xp_2_xp12_done \
 			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/adjusted_by_$*.txt \
+			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	);
 
 #
