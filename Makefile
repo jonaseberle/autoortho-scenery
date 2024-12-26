@@ -31,18 +31,39 @@ OP:=(
 CP:=)
 
 stats:
-	@printf "%28s\n" missing
-	@for tiles in *_tile_list; do \
-		printf "%-20s %4d/%4d\n" \
-			"$$tiles" \
+	@printf "                 validated  (done) /total\n"
+	@allDsf="$$(find build/Tiles/*/_docs -name 'generated_by_*' -printf "%f\n" | sed -E -e 's/generated_by_//' -e 's/\.txt/.dsf/' | sort)" \
+	&& validatedDsf="$$(find build/Tiles/*/_docs -name 'checked_by_*' -printf "%f\n" | sed -E -e 's/checked_by_//' -e 's/\.txt/.dsf/' | sort)" \
+		&& for tiles in *_tile_list; do \
+			dsfTile="$$(sort $$tiles | uniq)" \
+			&& printf "%-20s %5d (%5d) /%5d\n" \
+				"$$tiles" \
+				$$(comm --total -123 \
+						<(echo "$$dsfTile") \
+						<(echo "$$validatedDsf") \
+					| cut -f3) \
+				$$(comm --total -123 <(echo "$$dsfTile") <(echo "$$allDsf") | cut -f3) \
+				$$(cat $$tiles | wc -l); \
+		done \
+		&& printf "——————————————————————————————————————————\n" \
+		&& printf "%20s %5d (%5d) /%5d\n" \
+			"=" \
 			$$(comm --total -123 \
-					<(sort $$tiles) \
-					<(find build/Tiles/*/_docs -name 'checked_by_*' -printf "%f\n" | sed -E -e 's/checked_by_//' -e 's/\.txt/.dsf/' | sort) \
-				| sed -E 's/([0-9]+)[\t]([0-9]+)[\t]([0-9]+).*/\1/') \
-			$$(wc -l $$tiles | cut -f1 -d' '); \
-		 done
+					<(sort *_tile_list | uniq) \
+					<(echo "$$validatedDsf") \
+				| cut -f3) \
+			$$(comm --total -123 <(sort *_tile_list | uniq) <(echo "$$allDsf") | cut -f3) \
+			$$(cat *_tile_list | wc -l);
 	@printf "\ngenerated_by:\n"
 	@sort build/Tiles/zOrtho4XP_*/_docs/generated_by* | uniq -c
+
+# shows stats with changes from last call
+statsdiff:
+	@mkdir -p var/run/
+	@[ -e var/run/prevStats ] || touch var/run/prevStats
+	@new="$$($(MAKE) --silent stats)" \
+	&& diff --new-line-format='+%L' --old-line-format='-%L' --unchanged-line-format=' %L' var/run/prevStats <(echo "$$new"); \
+	echo "$$new" > var/run/prevStats
 
 # creates directories
 %/:
