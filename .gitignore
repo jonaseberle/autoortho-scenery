@@ -1,8 +1,6 @@
 /.idea/
 /.vscode/
 
-*~
-*.swp
 /build/
 /Ortho4XP/
 /Ortho4XP-shred86/
@@ -10,7 +8,5 @@
 /o4xp_2_xp12/
 /xptools/
 /otv/
-*_tile_list.*
 /var/
 /z_*_*/
-/z_*_*.zip
