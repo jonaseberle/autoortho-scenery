@@ -299,7 +299,7 @@ build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/_docs/ge
 		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
 			$(CURDIR)/otv/bin/otv --all --ignore-textures --no-progress . \
 		&& mkdir -p _docs/ \
-		&& rm -f Data* *.bak \
+		&& rm -f Data* *.bak "Earth nav data"/*/*.bak \
 		&& ( ls Ortho4XP_*.cfg &>/dev/null && mv Ortho4XP_*.cfg _docs/ || true ) \
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
