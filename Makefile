@@ -112,7 +112,8 @@ Ortho4XP:
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt
+		&& pip install -r requirements.txt \
+		&& pip install gdal
 
 Ortho4XP-v1.3:
 	@echo "[$@]"
@@ -127,7 +128,8 @@ Ortho4XP-v1.3:
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles build/ \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt
+		&& pip install -r requirements.txt \
+		&& pip install gdal
 
 Ortho4XP-shred86:
 	@echo "[$@]"
