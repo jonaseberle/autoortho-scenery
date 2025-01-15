@@ -102,10 +102,10 @@ z_ao_%: %_tile_list var/run/%_tiles var/run/Makefile.tilelistRules
 Ortho4XP:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
-	git clone https://github.com/oscarpilote/Ortho4XP.git $@
+	git clone https://github.com/jonaseberle/Ortho4XP.git $@
 	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/
 	@cd $@/ \
-		&& git checkout c5e0d4b50774de1850246fac56b9d461ae026a72 \
+		&& git switch release/for-autoortho-scenery \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
 		&& cp ../requirements.txt . \
 		&& cp ../Ortho4XP.cfg . \
