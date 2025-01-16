@@ -321,7 +321,7 @@ build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Orth
 	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
 		cd $(CURDIR)/Ortho4XP \
-			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& cp Ortho4XP_noroads.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
 			&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
