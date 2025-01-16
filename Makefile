@@ -340,7 +340,7 @@ build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Orth
 			&& python o4xp_2_xp12.py -subset $* -limit 1 cleanup \
 			&& rm -f $(CURDIR)/build/Tiles/zOrtho4XP_$*/"Earth nav data"/*/*.dsf-o4xp_2_xp12_done \
 			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/adjusted_by_$*.txt \
-			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
+			&& cp $(CURDIR)/Ortho4XP-v1.3/generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	);
 
 #
