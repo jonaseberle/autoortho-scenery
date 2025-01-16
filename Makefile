@@ -113,7 +113,7 @@ Ortho4XP:
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
-		&& pip install gdal
+		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
 Ortho4XP-v1.3:
 	@echo "[$@]"
@@ -129,7 +129,7 @@ Ortho4XP-v1.3:
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
-		&& pip install gdal
+		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
 Ortho4XP-shred86:
 	@echo "[$@]"
@@ -143,7 +143,8 @@ Ortho4XP-shred86:
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt
+		&& pip install -r requirements.txt \
+		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
 build/Elevation_data/:
 	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
