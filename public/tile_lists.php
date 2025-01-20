@@ -24,7 +24,7 @@
           font-size: 60%;
       }
   </style>
-<body>
+<body style="margin:0; padding: 0">
 <?php
 $drop = $_GET['drop'] ?? null;
 if ($drop !== null) {
