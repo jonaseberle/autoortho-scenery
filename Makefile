@@ -90,9 +90,10 @@ z_ao_%: %_tile_list var/run/%_tiles var/run/Makefile.tilelistRules
 	@cd build/Tiles \
 		&& for dsf in $$(cat ../../$*_tile_list); do \
 			echo $$dsf \
-				&& dir=zOrtho4XP_$$(basename $$dsf .dsf) \
+				&& dir=zOrtho4XP_$$(basename -- $$dsf .dsf) \
 				&& [ -e $$dir/"Earth nav data"/*/$$dsf ] \
-				&& cp --force --recursive --link $$dir/* $(CURDIR)/$@/. ; \
+				&& cp --force --recursive --link $$dir/* $(CURDIR)/$@/. \
+				|| exit 1; \
 		done
 
 #
@@ -202,7 +203,7 @@ build/Elevation_data/:
 			http://viewfinderpanoramas.org/dem1/O23.zip \
 		&& unzip -j -d ../../../build/Elevation_data -o '*.zip' \
 		&& cd ../../../build/Elevation_data \
-		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename {} .hgt)).hgt"' \;
+		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename -- {} .hgt)).hgt"' \;
 
 #
 # dsftool
