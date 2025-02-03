@@ -145,21 +145,6 @@ Ortho4XP-v1.3:
 		&& pip install -r requirements.txt \
 		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
-Ortho4XP-shred86:
-	@echo "[$@]"
-	[ ! -e $@ ] || rm -rf $@
-	git clone https://github.com/shred86/Ortho4XP.git $@
-	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
-	@cd $@/ \
-		&& git checkout 1f88dadca0d3b718b5d18b5cd66be6d701d31c81 \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
-		&& ln -snfr ../Ortho4XP.cfg Ortho4XP.cfg \
-		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
-		&& python3 -m venv .venv \
-		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt \
-		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
-
 build/Elevation_data/:
 	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
 	@mkdir -p $@ && cd $@ \
@@ -513,7 +498,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zl$(ZL)/o4xp1.40beta1-fallback1.3/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zl$(ZL)/o4xp1.40beta1-fallback1.3/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
 	@echo [$@]
 	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
