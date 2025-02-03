@@ -1,17 +1,28 @@
 #!/bin/bash
-# Outputs Makefile rules for tilelists.
+# Outputs Makefile rules for tilelists and a default all: target.
 # var/run/eur_tiles: build/Tiles/*/*/*/+51-010.dsf ...
 
 # saner programming env: these switches turn some bugs into errors
 set -o errexit -o pipefail -o noclobber -o nounset
 
+zl="$1"
+variant="$2"
+version="$3"
+
+printf "all:"
+for tilesetFilename in *_tile_list; do
+    tileset="$(basename "$tilesetFilename" _tile_list)"
+    printf "z_ao_%s_zl%s_%s_v%s " "$tileset" "$zl" "$variant" "$version"
+done
+echo
+
 for tilesetFilename in *_tile_list; do
 	tileset="$(basename "$tilesetFilename" _tile_list)"
-	printf "var/run/%s_tiles:" "$tileset"
+	printf "var/run/%s_zl%s_%s_v%s_tiles:" "$tileset" "$zl" "$variant" "$version"
 
 	for tileDsf in $(cat "$tilesetFilename"); do
 		tile="$(basename ./"$tileDsf" .dsf)"
-		printf "build/Tiles/zOrtho4XP_%s/_docs/checked_by_*.txt " "$tile"
+		printf "build/Tiles/zl%s/%s/v%s/zOrtho4XP_%s/_docs/checked_by_*.txt " "$zl" "$variant" "$version" "$tile"
 	done
 
 	echo

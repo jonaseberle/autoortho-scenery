@@ -4,36 +4,48 @@
 #
 # Quick start:
 #   Generate tile set:
-#     make z_ao_eur
-#       or:
-#       nice make -j $(nproc --ignore=2) z_ao_eur
+#     export TILESET=eur ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Generate single tile:
-#     make z_ao__single_+78+015
+#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6) z_ao__single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
+#
+#   Make all:
+#     export ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6)
 #
 #   Stats:
 #     make stats
-#
-#   Test:
-#     make build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt
 
 # remove make builtin rules for more useful make -d 
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
+SHELL=/bin/bash
 
 # @see ./bin/prepareAssetsElevationData
 ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery/releases/tags/elevation-v0.0.1
-SHELL=/bin/bash
+
+ZL?=16
+VARIANT?=o4xp1.40beta1-fallback1.3
+VERSION?=1.0
 
 # paranthesis to use in shell commands
 # make chokes on () in shell commands
 OP:=(
 CP:=)
 
+#
+# Work on tile lists
+#
+.DEFAULT_GOAL := all
+var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION): bin/genMakefileTilelistRules *_tile_list
+	@mkdir -p var/run/
+	@echo "[$@]"
+	@bin/genMakefileTilelistRules $(ZL) $(VARIANT) $(VERSION) > $@
+include var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION)
+
 stats:
 	@printf "                 validated  (done) /total\n"
-	@allDsf="$$(find build/Tiles/*/_docs -name 'generated_by_*' -printf "%f\n" | sed -E -e 's/generated_by_//' -e 's/\.txt/.dsf/' | sort)" \
-	&& validatedDsf="$$(find build/Tiles/*/_docs -name 'checked_by_*' -printf "%f\n" | sed -E -e 's/checked_by_//' -e 's/\.txt/.dsf/' | sort)" \
+	@allDsf="$$(find build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/*/_docs -name 'generated_by_*' -printf "%f\n" 2> /dev/null | sed -E -e 's/generated_by_//' -e 's/\.txt/.dsf/' | sort)" \
+	&& validatedDsf="$$(find build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/*/_docs -name 'checked_by_*' -printf "%f\n" 2> /dev/null | sed -E -e 's/checked_by_//' -e 's/\.txt/.dsf/' | sort)" \
 		&& for tiles in *_tile_list; do \
 			dsfTile="$$(sort $$tiles | uniq)" \
 			&& printf "%-20s %5d (%5d) /%5d\n" \
@@ -55,7 +67,7 @@ stats:
 			$$(comm --total -123 <(sort *_tile_list | uniq) <(echo "$$allDsf") | cut -f3) \
 			$$(cat *_tile_list | wc -l);
 	@printf "\ngenerated_by:\n"
-	@sort build/Tiles/zOrtho4XP_*/_docs/generated_by* | uniq -c
+	@sort build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_*/_docs/generated_by* 2> /dev/null | uniq -c
 
 # shows stats with changes from last call
 statsdiff:
@@ -74,21 +86,22 @@ statsdiff:
 # tilesets and tiles
 #
 
-z_ao__single_%: build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt
+z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt
 	@echo "[$@]"
 	@rm -rf $@/
-	@cp --force --link --recursive build/Tiles/zOrtho4XP_$*/ z_ao__single_$*/
+	@cp --force --link --recursive build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/ $@/
 
-z_ao__single_%.zip: z_ao__single_%
+z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION).zip: z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
 	@echo "[$@]"
-	@cd z_ao__single_$* && zip -r ../../../$@ .
+	@cd z_ao__single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION) \
+		&& zip -r ../$@ .
 
-z_ao_%: %_tile_list var/run/%_tiles var/run/Makefile.tilelistRules
+z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_v$(VERSION)_tiles var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION)
 	@echo "[$@]"
 	@rm -rf $@/
 	@mkdir -p $@
-	@cd build/Tiles \
-		&& for dsf in $$(cat ../../$*_tile_list); do \
+	@cd build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/ \
+		&& for dsf in $$(cat $(CURDIR)/$*_tile_list); do \
 			echo $$dsf \
 				&& dir=zOrtho4XP_$$(basename -- $$dsf .dsf) \
 				&& [ -e $$dir/"Earth nav data"/*/$$dsf ] \
@@ -104,13 +117,13 @@ Ortho4XP:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/jonaseberle/Ortho4XP.git $@
-	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@cd $@/ \
 		&& git switch release/for-autoortho-scenery \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
 		&& cp ../requirements.txt . \
 		&& ln -snfr ../Ortho4XP.cfg Ortho4XP.cfg \
-		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles . \
+		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
@@ -120,13 +133,13 @@ Ortho4XP-v1.3:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/w8sl/Ortho4XP.git $@
-	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@cd $@/ \
 		&& git switch Progressive_130 \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
 		&& mkdir -p build/ \
-		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles build/ \
+		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos build/ \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
@@ -136,12 +149,12 @@ Ortho4XP-shred86:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/shred86/Ortho4XP.git $@
-	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@cd $@/ \
 		&& git checkout 1f88dadca0d3b718b5d18b5cd66be6d701d31c81 \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP.cfg Ortho4XP.cfg \
-		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos ../build/Tiles . \
+		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
@@ -295,9 +308,9 @@ var/cache/elevation/elevation_%.zip: var/run/elevationRelease.json
 # Build and test tile
 #
 
-build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt otv
+build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt otv
 	@echo [$@]
-	@cd $(CURDIR)/build/Tiles/zOrtho4XP_$* \
+	@cd $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$* \
 		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
 			$(CURDIR)/otv/bin/otv --all --ignore-textures --no-progress . \
 		&& mkdir -p _docs/ \
@@ -306,53 +319,49 @@ build/Tiles/zOrtho4XP_%/_docs/checked_by_*.txt: build/Tiles/zOrtho4XP_%/_docs/ge
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zl$(ZL)/o4xp1.40beta1-fallback1.3/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-shred86 Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
 	@echo [$@]
-	@mkdir -p $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/
+	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
 	@set -x; \
 	echo $(@); \
 	export COORDS=$$(echo $(@) | sed -e 's/.*\([-+][0-9]\+\)\([-+][0-9]\+\).*/\1 \2/g'); \
 	cd $(CURDIR)/Ortho4XP \
-		&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+		&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+		&& sed -i "/^default_zl=/s/=.*/=$(ZL)/" $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+		&& ln -snfr ../build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION) ./Tiles \
 		&& . .venv/bin/activate \
 		&& python3 Ortho4XP.py $$COORDS 2>&1 \
-		&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
-		&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt; \
-	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
+		&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
+		&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt; \
+	[ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
 		cd $(CURDIR)/Ortho4XP \
-			&& cp Ortho4XP_noroads.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& cp Ortho4XP_noroads.cfg $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& sed -i "/^default_zl=/s/=.*/=$(ZL)/" $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& ln -snfr ../build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION) ./Tiles \
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
-			&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
-			&& cp generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
+			&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
+			&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	); \
-	[ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
+	[ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with Ortho4XP 1.3"; \
 		cd $(CURDIR)/Ortho4XP-v1.3 \
-			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& sed -i "/^default_zl=/s/=.*/=$(ZL)/" $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
+			&& ln -snfr ../build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION) ./build/Tiles \
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
-			&& [ -e "$(CURDIR)/build/Tiles/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
+			&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 			&& cd $(CURDIR)/o4xp_2_xp12 \
 			&& . .venv/bin/activate \
 			&& python o4xp_2_xp12.py -subset $* -limit 1 convert \
 			&& python o4xp_2_xp12.py -subset $* -limit 1 cleanup \
-			&& rm -f $(CURDIR)/build/Tiles/zOrtho4XP_$*/"Earth nav data"/*/*.dsf-o4xp_2_xp12_done \
-			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/adjusted_by_$*.txt \
-			&& cp $(CURDIR)/Ortho4XP-v1.3/generated_by.template $(CURDIR)/build/Tiles/zOrtho4XP_$*/_docs/generated_by_$*.txt \
+			&& rm -f $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/"Earth nav data"/*/*.dsf-o4xp_2_xp12_done \
+			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/adjusted_by_$*.txt \
+			&& cp $(CURDIR)/Ortho4XP-v1.3/generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	);
-
-#
-# Work on tile lists
-#
-
-var/run/Makefile.tilelistRules: bin/genMakefileTilelistRules *_tile_list
-	@mkdir -p var/run/
-	@echo "[$@]"
-	@bin/genMakefileTilelistRules > $@
-include var/run/Makefile.tilelistRules
 
 
 clean:
