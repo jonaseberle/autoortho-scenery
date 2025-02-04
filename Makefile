@@ -119,8 +119,7 @@ Ortho4XP: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ bui
 	git clone https://github.com/jonaseberle/Ortho4XP.git $@
 	@set -x && cd $@/ \
 		&& git switch release/for-autoortho-scenery \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
-		&& cp ../requirements.txt . \
+		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP.cfg Ortho4XP.cfg \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
 		&& python3 -m venv .venv \
@@ -134,7 +133,8 @@ Ortho4XP-v1.3: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data
 	git clone https://github.com/w8sl/Ortho4XP.git $@
 	@set -x && cd $@/ \
 		&& git switch Progressive_130 \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > generated_by.template \
+		&& git checkout 36001c505b2479b54e7785845f18a296e191697f \
+		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
 		&& mkdir -p build/ \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos build/ \
@@ -414,7 +414,7 @@ o4xp_2_xp12: xptools
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/jonaseberle/o4xp_2_xp12.git
 	@cd $@/ \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > adjusted_by.template \
+		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > adjusted_by.template \
 		&& cp o4xp_2_xp12.ini-sample o4xp_2_xp12.ini \
 		&& sed -i "/^xp12_root =/s/=.*/=\\/home\\/jonas\\/Storage\\/X-Plane 12/" o4xp_2_xp12.ini \
 		&& sed -i "/^dsf_tool =/s/=.*/=..\\/xptools\\/tools\\/DSFTool/" o4xp_2_xp12.ini \
@@ -433,7 +433,7 @@ otv:
 	[ ! -e $@ ] || rm -rf $@
 	git clone --single-branch --branch develop https://github.com/jonaseberle/otv.git
 	@cd $@/ \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags)" > checked_by.template \
+		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > checked_by.template \
 		&& PIPENV_PIPFILE=./Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv install
 
 #
