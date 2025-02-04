@@ -124,7 +124,7 @@ Ortho4XP: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ bui
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt \
+		&& pip install pip-tools && pip-sync \
 		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
 Ortho4XP-v1.3: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos/ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/
