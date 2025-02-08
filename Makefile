@@ -136,7 +136,7 @@ Ortho4XP-v1.3:
 	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@set -x && cd $@/ \
 		&& git switch Progressive_130 \
-		&& git checkout 36001c505b2479b54e7785845f18a296e191697f \
+		&& git checkout 78ab5582bc218ddc1bca669506839c6a7b0c66df \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
 		&& mkdir -p build/ \
