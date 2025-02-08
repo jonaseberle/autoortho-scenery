@@ -121,7 +121,7 @@ Ortho4XP:
 	@set -x && cd $@/ \
 		&& git switch release/for-autoortho-scenery \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
-		&& ln -snfr ../Ortho4XP.cfg Ortho4XP.cfg \
+		&& ln -snfr ../Ortho4XP.cfg ../Ortho4XP_noroads.cfg . \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
