@@ -113,10 +113,11 @@ z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_
 # Ortho4XP setup
 #
 
-Ortho4XP: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos/ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/
+Ortho4XP:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/jonaseberle/Ortho4XP.git $@
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@set -x && cd $@/ \
 		&& git switch release/for-autoortho-scenery \
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
@@ -127,10 +128,11 @@ Ortho4XP: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ bui
 		&& pip install pip-tools && pip-sync \
 		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
-Ortho4XP-v1.3: build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos/ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/
+Ortho4XP-v1.3:
 	@echo "[$@]"
 	[ ! -e $@ ] || rm -rf $@
 	git clone https://github.com/w8sl/Ortho4XP.git $@
+	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
 	@set -x && cd $@/ \
 		&& git switch Progressive_130 \
 		&& git checkout 36001c505b2479b54e7785845f18a296e191697f \
