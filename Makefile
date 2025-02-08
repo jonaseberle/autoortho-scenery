@@ -123,6 +123,7 @@ Ortho4XP:
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP.cfg ../Ortho4XP_noroads.cfg . \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
+		&& rm -rf Patches/ && ln -snfr ../Patches \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install pip-tools && pip-sync \
@@ -140,6 +141,7 @@ Ortho4XP-v1.3:
 		&& ln -snfr ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
 		&& mkdir -p build/ \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos build/ \
+		&& rm -rf Patches/ && ln -snfr ../Patches \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
 		&& pip install -r requirements.txt \
