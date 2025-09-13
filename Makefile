@@ -7,7 +7,7 @@
 #     export TILESET=eur ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Generate single tile:
-#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6) z_ao__single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6) z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Make all:
 #     export ZL=16 VARIANT=o4xp1.40beta1-fallback1.3 VERSION=1.0 && nice make -j $(nproc --ignore=6)
@@ -86,14 +86,14 @@ statsdiff:
 # tilesets and tiles
 #
 
-z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt
+z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt
 	@echo "[$@]"
 	@rm -rf $@/
 	@cp --force --link --recursive build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/ $@/
 
-z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION).zip: z_ao__single_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
+z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION).zip: z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
 	@echo "[$@]"
-	@cd z_ao__single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION) \
+	@cd z_ao_.single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION) \
 		&& zip -r ../$@ .
 
 z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_v$(VERSION)_tiles var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION)
