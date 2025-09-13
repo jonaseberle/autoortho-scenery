@@ -18,5 +18,11 @@ https://forums.x-plane.org/index.php?/files/file/94169-lukla-vnlk-ortho4xp-patch
 Thanks to all OpenStreetMaps contributors
 
 
+These tiles do not contain the overlay exports! It is best enjoyed with the simHeaven X-WORLD overlays.
+
+Fixed issues:
+ +38-010: LPPT patch
+
 Known issues:
-eur: +45+045
+eur:
+ +45+045

@@ -65,7 +65,7 @@ stats:
 					<(echo "$$validatedDsf") \
 				| cut -f3) \
 			$$(comm --total -123 <(sort *_tile_list | uniq) <(echo "$$allDsf") | cut -f3) \
-			$$(cat *_tile_list | wc -l);
+			$$(cat *_tile_list | sort | uniq | wc -l);
 	@printf "\ngenerated_by:\n"
 	@sort build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_*/_docs/generated_by* 2> /dev/null | uniq -c
 
