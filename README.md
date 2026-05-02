@@ -1,7 +1,8 @@
 # autoortho-scenery (flightwusel packages)
 Prepared X-Plane scenery packs for the AutoOrtho project.
 
-This is a fork of the original autoortho-scenery that Matt created. 
+This is a fork of the original autoortho-scenery that Matt created.
+It contains releases and the source code for the build system. 
 Its main intention is to provide packages compatible with X-Plane 12.
 
 NOTE: This scenery pack contains no textures and requires [AutoOrtho](https://github.com/kubilus1/autoortho) to work.
@@ -11,9 +12,11 @@ It does not contain overlays. We recommend simHeaven X-WORLD to use with it.
 
 # Download
 
+These are the scenery packages:
+
 ![flightwusel z_ao scenery packages cutting](./_z_ao_packages-world-tiles.png)
 
-Download via BitTorrent. .torrent files are [here](https://c.boolshit.ovh/s/ty5mBbzyRZPDKFM)
+Download via BitTorrent. .torrent files are [under each release](https://github.com/jonaseberle/autoortho-scenery/releases)
 
 # Installation
 
