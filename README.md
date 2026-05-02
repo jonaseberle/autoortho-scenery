@@ -11,6 +11,8 @@ It does not contain overlays. We recommend simHeaven X-WORLD to use with it.
 
 # Download
 
+![flightwusel z_ao scenery packages cutting](./_z_ao_packages-world-tiles.png)
+
 Download via BitTorrent. .torrent files are [here](https://c.boolshit.ovh/s/ty5mBbzyRZPDKFM)
 
 # Installation
