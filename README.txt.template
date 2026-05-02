@@ -1,0 +1,56 @@
+flightwusel autoortho scenery packs
+-----------------------------------------------------------------------------------------------------------------------
+ZL=16
+VARIANT=o4xp1.40beta1-fallback1.3 (for X-Plane 12)
+VERSION=1.0
+build system source code: https://github.com/jonaseberle/autoortho-scenery/tree/feat/sonny%2Botv%2B1.3fallback%2Bo4xp_2_xp2
+-----------------------------------------------------------------------------------------------------------------------
+
+Installation:
+  This does not use the AutoOrtho installer. You need to install it manually.
+  You can/should remove the original scenery packages downloaded via the AutoOrtho installer.
+  It could be that the installer does not work with it afterwards.
+
+  I cannot be held responsible for any problems.
+
+  Put the folder into your configured AutoOrtho paths.scenery_path from your AutoOrtho config file
+  (by default <X-Plane>/Custom Scenery/z_autoortho/scenery/).
+
+Notice:
+  These tiles do not contain the overlay exports! It is best enjoyed with the simHeaven X-WORLD overlays.
+
+Understand AutoOrtho/how to get help with it:
+  https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Attribution:
+  Thanks to Matt (kubilus) for developing AutoOrtho.
+
+  eur:
+    This scenery contains elevation data by Sonny, released under Creative Commons Attribution 4.0
+    (CC BY 4.0 https://creativecommons.org/licenses/by/4.0/deed.en), downloaded from sonny.4lima.de.
+    Please consider a donation to Sonny if you like the European mesh!
+
+  viewfinderpanoramas.org 1" for Greenland, North America, New Zealand and Antarctica
+    https://viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org1.htm
+    https://viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org3.htm
+    https://viewfinderpanoramas.org/ by Jonathan de Ferranti
+
+  Thanks to all OpenStreetMaps contributors.
+
+Contained fixes:
+  +27+086: Contains the VNLK Lukla patch by Vlad A.
+    https://forums.x-plane.org/index.php?/files/file/94169-lukla-vnlk-ortho4xp-patch-xp12/
+
+  +38-010: LPPT patch
+
+Known issues:
+  eur:
+    +45+045
+
+Debugging:
+  Find Ortho4XP tile configs and test results in the ./_docs folder.
+
+Todo (maybe...):
+  Implement many useful O4XP patches: https://forums.x-plane.org/profile/5997-november-lima/content/?type=downloads_file
