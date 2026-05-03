@@ -5,8 +5,8 @@ This is a fork of the original autoortho-scenery that Matt created.
 It contains releases and the source code for the build system. 
 Its main intention is to provide packages compatible with X-Plane 12.
 
-NOTE: This scenery pack contains no textures and requires [AutoOrtho](https://github.com/kubilus1/autoortho) to work.
-Without this tool running this scenery pack will not function as intended.
+NOTE: These scenery packs contain no textures and require
+[AutoOrtho](https://github.com/kubilus1/autoortho) to work.
 
 It does not contain overlays. We recommend simHeaven X-WORLD to use with it.
 
@@ -27,6 +27,7 @@ It could be that the installer does not work with it afterwards.
 I cannot be held responsible for any problems. 
 
 You should now your way around AutoOrtho's mode of operation.
-When you are unsure, please read [this forum post](https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/).
+When you are unsure, please read 
+[this forum post](https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/).
 
 See the [README.txt](README.txt.template) inside each downloaded package for installation instructions.

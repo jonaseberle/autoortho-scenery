@@ -1,4 +1,4 @@
-flightwusel autoortho scenery packs
+autoortho-scenery (flightwusel packages)
 -----------------------------------------------------------------------------------------------------------------------
 ZL=16
 VARIANT=o4xp1.40beta1-fallback1.3 (for X-Plane 12)
@@ -7,22 +7,31 @@ VERSION=1.0
 Links:
   build system source code: https://github.com/jonaseberle/autoortho-scenery/
   latest release: https://github.com/jonaseberle/autoortho-scenery/releases/
+  forum post: https://forums.x-plane.org/forums/topic/346802-autoortho-scenery-flightwusel-packages-for-x-plane-12-as-torrent-downloads/
 
 Installation:
   This does not use the AutoOrtho installer. You need to install it manually.
   You can/should remove the original scenery packages downloaded via the AutoOrtho installer.
   It could be that the installer does not work with it afterwards.
+  The original packages are basically not compatible with this because they cover different areas!
 
   I cannot be held responsible for any problems.
 
-  Put the folder into your configured AutoOrtho paths.scenery_path from your AutoOrtho config file
-  (by default <X-Plane>/Custom Scenery/z_autoortho/scenery/).
+  Please understand first how AutoOrtho works and how you have to set up a new scenery package.
+  Many questions are answered in this post:
+  https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/
+  Please inform yourself and refrain from posting lazy "does not work" posts on the forums unless you have at least
+  spent half an hour yourself trying to correct a problem.
+
+  in short:
+  * Put the folder into your configured AutoOrtho paths.scenery_path from your AutoOrtho config file
+    (by default <X-Plane>/Custom Scenery/z_autoortho/scenery/).
+  * Arrange your `scenery_packs.ini`: see the block about it in the mentioned forum post above.
+
 
 Notice:
-  These tiles do not contain the overlay exports! It is best enjoyed with the simHeaven X-WORLD overlays.
-
-Understand AutoOrtho/how to get help with it:
-  https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/
+  These tiles do not contain the overlay exports! It recommend enjoying them with the simHeaven X-WORLD overlays.
+  If you do not add overlays, you will NOT see roads, forests, houses, ...!
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -50,6 +59,7 @@ Contained fixes:
 Known issues:
   eur:
     +45+045
+    BIIS: rock wall near the airport
 
 Debugging:
   Find Ortho4XP tile configs and test results in the ./_docs folder.
