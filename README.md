@@ -26,7 +26,7 @@ It could be that the installer does not work with it afterwards.
 
 I cannot be held responsible for any problems. 
 
-You should now your way around AutoOrtho's mode of operation.
+You should know your way around AutoOrtho's mode of operation.
 When you are unsure, please read 
 [this forum post](https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/).
 

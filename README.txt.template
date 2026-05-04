@@ -30,7 +30,7 @@ Installation:
 
 
 Notice:
-  These tiles do not contain the overlay exports! It recommend enjoying them with the simHeaven X-WORLD overlays.
+  These tiles do not contain the overlay exports! I recommend enjoying them with the simHeaven X-WORLD overlays.
   If you do not add overlays, you will NOT see roads, forests, houses, ...!
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ Contained fixes:
 Known issues:
   eur:
     +45+045
-    BIIS: rock wall near the airport
+    +66-024: BIIS: rock wall near the airport
 
 Debugging:
   Find Ortho4XP tile configs and test results in the ./_docs folder.
