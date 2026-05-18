@@ -501,7 +501,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zl$(ZL)/o4xp1.40beta1-fallback1.3/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
 	@echo [$@]
 	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
