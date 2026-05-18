@@ -21,11 +21,11 @@ MAKEFLAGS += --no-builtin-variables
 SHELL=/bin/bash
 
 # @see ./bin/prepareAssetsElevationData
-ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery/releases/tags/elevation-v0.0.1
+ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery_elevation-data/releases
 
 ZL?=16
 VARIANT?=o4xp1.40beta1-fallback1.3
-VERSION?=1.0
+VERSION?=1.1
 
 # paranthesis to use in shell commands
 # make chokes on () in shell commands
@@ -469,14 +469,14 @@ var/run/elevationRelease.json:
 	@echo "[$@]"
 	@json="$$(gh api $(ELEV_RELEASE_JSON_ENDPOINT) --paginate)" \
 		&& echo "$$json" > $@ \
-		&& printf "[$@] got %s\n" "$$(jq -r '.assets[].name' $@ | tr --delete "elevation_" | tr --delete ".zip" | tr "\n" ",")"
+		&& printf "[$@] got %s\n" "$$(jq -r '.[].assets[].name' $@ | tr --delete "elevation_" | tr --delete ".zip" | tr "\n" ",")"
 
 var/cache/elevation/elevation_%.zip: var/run/elevationRelease.json
 	@mkdir -p var/cache/elevation/
 	@# Fails if we expect a file but download failed. 
 	@# Creates an empty .zip file if there is no custom elevation.
-	@url=$$(jq -r '.assets[] | select$(OP).name == "elevation_$*.zip"$(CP) .browser_download_url' \
-			var/run/elevationRelease.json); \
+	@url=$$(jq -r '.[].assets[] | select$(OP).name == "elevation_$*.zip"$(CP) .browser_download_url' \
+			var/run/elevationRelease.json | head -n1); \
 		if [ -n "$$url" ]; then \
 			echo "[$@] downloading custom elevation"; \
 			wget --continue --quiet -O $@ "$$url" && touch $@; \
