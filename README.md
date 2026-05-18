@@ -2,7 +2,7 @@
 Prepared X-Plane scenery packs for the AutoOrtho project.
 
 This is a fork of the original autoortho-scenery that Matt created.
-It contains the generated autootrho-scenery packages as releases and the source code for the build system. 
+It contains the generated autoortho-scenery packages as releases and the source code for the build system.
 Its main intention is to provide packages compatible with X-Plane 12.
 
 NOTE: These scenery packs contain no textures and require
