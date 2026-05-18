@@ -123,6 +123,7 @@ Ortho4XP:
 		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
 		&& ln -snfr ../Ortho4XP.cfg ../Ortho4XP_noroads.cfg . \
 		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos . \
+		&& ln -snfr ../build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION) Tiles \
 		&& rm -rf Patches/ && ln -snfr ../Patches \
 		&& python3 -m venv .venv \
 		&& . .venv/bin/activate \
