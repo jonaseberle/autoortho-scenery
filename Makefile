@@ -86,22 +86,22 @@ statsdiff:
 # tilesets and tiles
 #
 
-z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt
+z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt README.txt.template
 	@echo "[$@]"
 	@rm -rf $@/
 	@cp --force --link --recursive build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/ $@/
-	@cp README.txt.template $@/README.txt
+	@envsubst < README.txt.template > $@/README.txt
 
 z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION).zip: z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
 	@echo "[$@]"
 	@cd z_ao_.single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION) \
 		&& zip -r ../$@ .
 
-z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_v$(VERSION)_tiles var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION)
+z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_v$(VERSION)_tiles var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION) README.txt.template
 	@echo "[$@]"
 	@rm -rf $@/
 	@mkdir -p $@
-	@cp README.txt.template $@/README.txt
+	@envsubst < README.txt.template > $@/README.txt
 	@cd build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/ \
 		&& for dsf in $$(cat $(CURDIR)/$*_tile_list); do \
 			echo $$dsf \

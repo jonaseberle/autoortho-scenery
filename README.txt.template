@@ -1,8 +1,8 @@
 autoortho-scenery (flightwusel packages)
 -----------------------------------------------------------------------------------------------------------------------
-ZL=16
-VARIANT=o4xp1.40.13+je (for X-Plane 12)
-VERSION=1.1
+ZL=${ZL}
+VARIANT=${VARIANT} (for X-Plane 12)
+VERSION=${VERSION}
 -----------------------------------------------------------------------------------------------------------------------
 Links:
   build system source code: https://github.com/jonaseberle/autoortho-scenery/
