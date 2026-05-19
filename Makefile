@@ -132,24 +132,6 @@ Ortho4XP:
 		&& pip install pip-tools && pip-sync \
 		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
-Ortho4XP-v1.3:
-	@echo "[$@]"
-	[ ! -e $@ ] || rm -rf $@
-	git clone https://github.com/w8sl/Ortho4XP.git $@
-	@mkdir -p build/Elevation_data/ build/Geotiffs/ build/Masks/ build/OSM_data/ build/Orthophotos build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)
-	@set -x && cd $@/ \
-		&& git switch Progressive_130 \
-		&& git checkout 78ab5582bc218ddc1bca669506839c6a7b0c66df \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > generated_by.template \
-		&& ln -snfr ../Ortho4XP-v1.3.cfg Ortho4XP.cfg \
-		&& mkdir -p build/ \
-		&& ln -snfr ../build/Elevation_data ../build/Geotiffs ../build/Masks ../build/OSM_data ../build/Orthophotos build/ \
-		&& rm -rf Patches/ && ln -snfr ../Patches \
-		&& python3 -m venv .venv \
-		&& . .venv/bin/activate \
-		&& pip install -r requirements.txt \
-		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
-
 build/Elevation_data/:
 	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
 	@mkdir -p $@ && cd $@ \
@@ -503,7 +485,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP Ortho4XP-v1.3 build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
 	@echo [$@]
 	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
@@ -528,25 +510,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt:
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
 			&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
-	); \
-	[ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
-		echo "ERROR DETECTED! Retry tile $@ with Ortho4XP 1.3"; \
-		cd $(CURDIR)/Ortho4XP-v1.3 \
-			&& cp Ortho4XP.cfg $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
-			&& sed -i "/^default_zl=/s/=.*/=$(ZL)/" $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Ortho4XP_$*.cfg \
-			&& ln -snfr ../build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION) ./build/Tiles \
-			&& . .venv/bin/activate \
-			&& python3 Ortho4XP.py $$COORDS 2>&1 \
-			&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
-			&& cd $(CURDIR)/o4xp_2_xp12 \
-			&& . .venv/bin/activate \
-			&& python o4xp_2_xp12.py -subset $* -limit 1 convert \
-			&& python o4xp_2_xp12.py -subset $* -limit 1 cleanup \
-			&& rm -f $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/"Earth nav data"/*/*.dsf-o4xp_2_xp12_done \
-			&& cp adjusted_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/adjusted_by_$*.txt \
-			&& cp $(CURDIR)/Ortho4XP-v1.3/generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
-	);
-
+	)
 
 clean:
 	@echo "[$@]"
