@@ -4,13 +4,13 @@
 #
 # Quick start:
 #   Generate tile set:
-#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.1 && nice make -j $(nproc --ignore=6) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Generate single tile:
-#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.1 && nice make -j $(nproc --ignore=6) z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6) z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Make all:
-#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.1 && nice make -j $(nproc --ignore=6)
+#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6)
 #
 #   Stats:
 #     make stats
@@ -25,7 +25,7 @@ ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery_elevation-data/r
 
 ZL?=16
 VARIANT?=o4xp1.40.13+je
-VERSION?=1.1
+VERSION?=1.2
 
 # paranthesis to use in shell commands
 # make chokes on () in shell commands
