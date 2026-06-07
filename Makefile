@@ -395,25 +395,6 @@ xptools:
 	&& chmod +x tools/* \
 
 #
-# hotbso/o4xp_2_xp12 fork
-#
-
-o4xp_2_xp12: xptools
-	@echo "[$@]"
-	[ ! -e $@ ] || rm -rf $@
-	git clone https://github.com/jonaseberle/o4xp_2_xp12.git
-	@cd $@/ \
-		&& echo "$$(git remote get-url origin)|$$(git describe --tags --long)" > adjusted_by.template \
-		&& cp o4xp_2_xp12.ini-sample o4xp_2_xp12.ini \
-		&& sed -i "/^xp12_root =/s/=.*/=\\/home\\/jonas\\/Storage\\/X-Plane 12/" o4xp_2_xp12.ini \
-		&& sed -i "/^dsf_tool =/s/=.*/=..\\/xptools\\/tools\\/DSFTool/" o4xp_2_xp12.ini \
-		&& sed -i "/^ortho_dir =/s/=.*/=..\\/build\\/Tiles/" o4xp_2_xp12.ini \
-		&& sed -i "/^work_dir =/s/=.*/=.\\/tmp/" o4xp_2_xp12.ini \
-		&& sed -i "/^7zip =/s/=.*/=7z/" o4xp_2_xp12.ini \
-        && python3 -m venv .venv \
-        && . .venv/bin/activate
-
-#
 # dyoung522/otv (Tile Checker) fork
 #
 
@@ -485,7 +466,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
 
 
-build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP build/Elevation_data/ var/run/neighboursOfTile_%.elevation o4xp_2_xp12
+build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP build/Elevation_data/ var/run/neighboursOfTile_%.elevation
 	@echo [$@]
 	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
 	@# this silences deprecation warnings in Ortho4XP for more concise output
