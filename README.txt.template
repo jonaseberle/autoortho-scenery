@@ -30,7 +30,8 @@ Installation:
 
 
 Notice:
-  These tiles do not contain the overlay exports! I recommend enjoying them with the simHeaven X-WORLD overlays.
+  These tiles do not contain the overlay exports! I recommend enjoying them with the simHeaven X-WORLD
+  (or X-WORLD PRO) overlays.
   If you do not add overlays, you will NOT see roads, forests, houses, ...!
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Attribution:
 
   eur/greenland:
     This scenery contains elevation data by Sonny, released under Creative Commons Attribution 4.0
-    (CC BY 4.0 https://creativecommons.org/licenses/by/4.0/deed.en), downloaded from sonny.4lima.de.
+    (CC BY 4.0 https://creativecommons.org/licenses/by/4.0/deed.en), downloaded from https://sonny.4lima.de/ .
     Please consider a donation to Sonny if you like the European mesh!
 
   viewfinderpanoramas.org 1" for North America, New Zealand and Antarctica
@@ -65,6 +66,3 @@ Known issues:
 
 Debugging:
   Find Ortho4XP tile configs and test results in the ./_docs folder.
-
-Todo (maybe...):
-  Implement many useful O4XP patches: https://forums.x-plane.org/profile/5997-november-lima/content/?type=downloads_file

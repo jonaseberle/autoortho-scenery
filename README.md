@@ -1,4 +1,5 @@
 # autoortho-scenery (flightwusel packages)
+
 Prepared X-Plane scenery packs for the AutoOrtho project.
 
 This is a fork of the original autoortho-scenery that Matt created.
@@ -8,7 +9,14 @@ Its main intention is to provide packages compatible with X-Plane 12.
 NOTE: These scenery packs contain no textures and require
 [AutoOrtho](https://github.com/kubilus1/autoortho) to work.
 
-It does not contain overlays. We recommend simHeaven X-WORLD to use with it.
+
+# The Scenery
+
+* is an X-Plane 12 base mesh scenery with high resolution elevation data (where available) and bathymetry.
+
+* uses large water masks (you'll see the satellite imagery shine through until 650m from shore), also for inland water bodies (rivers).
+
+* does not contain overlays (roads, forests, houses)! We recommend to use simHeaven X-WORLD (or X-WORLD PRO).
 
 # Download
 
@@ -18,16 +26,17 @@ These are the scenery packages:
 
 Download via BitTorrent. .torrent files are [under each release](https://github.com/jonaseberle/autoortho-scenery/releases)
 
+
 # Installation
-
-This does not use the AutoOrtho installer. You need to install it manually.
-You can/should remove the original scenery packages downloaded via the AutoOrtho installer.
-It could be that the installer does not work with it afterwards.
-
-I cannot be held responsible for any problems. 
 
 You should know your way around AutoOrtho's mode of operation.
 When you are unsure, please read 
 [this forum post](https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/).
 
 See the [README.txt](README.txt.template) inside each downloaded package for installation instructions.
+I cannot be held responsible for any problems.
+
+
+# Todo (maybe...):
+
+Implement many useful O4XP patches by November Lima: https://forums.x-plane.org/profile/5997-november-lima/content/?type=downloads_file
