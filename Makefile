@@ -137,15 +137,14 @@ build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 	@mkdir -p $@ && cd $@ \
 		&& bash -c 'for lat in {-9..9}; do for lon in {-18..18}; do ln -snfr ./ "./$$(printf "%+d0%+03d0" "$$lat" "$$lon")"; done; done'
 
-	# not avail:
-	# 			https://viewfinderpanoramas.org/dem1/N01.zip \
-	# 			https://viewfinderpanoramas.org/dem1/N02.zip \
-	# 			https://viewfinderpanoramas.org/dem1/N03.zip \
-	# 			https://viewfinderpanoramas.org/dem1/N04.zip \
-	# 			https://viewfinderpanoramas.org/dem1/N05.zip \
-	# 			https://viewfinderpanoramas.org/dem1/M01.zip \
-	# 			https://viewfinderpanoramas.org/dem1/H11.zip \
-	# removed from list: Europe
+	@# these are not found: \
+			#https://viewfinderpanoramas.org/dem1/N01.zip \
+			#https://viewfinderpanoramas.org/dem1/N02.zip \
+			#https://viewfinderpanoramas.org/dem1/N03.zip \
+			#https://viewfinderpanoramas.org/dem1/N04.zip \
+			#https://viewfinderpanoramas.org/dem1/N05.zip \
+			#https://viewfinderpanoramas.org/dem1/M01.zip \
+			#https://viewfinderpanoramas.org/dem1/H11.zip \
 
 	@mkdir -p var/cache/ferranti_nonStandardNames/ \
 		&& cd var/cache/ferranti_nonStandardNames/ \
@@ -292,11 +291,6 @@ build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 			https://viewfinderpanoramas.org/dem1/O18.zip \
 			https://viewfinderpanoramas.org/dem1/O19.zip \
 			https://viewfinderpanoramas.org/dem1/O20.zip \
-			https://viewfinderpanoramas.org/dem1/N01.zip \
-			https://viewfinderpanoramas.org/dem1/N02.zip \
-			https://viewfinderpanoramas.org/dem1/N03.zip \
-			https://viewfinderpanoramas.org/dem1/N04.zip \
-			https://viewfinderpanoramas.org/dem1/N05.zip \
 			https://viewfinderpanoramas.org/dem1/N08.zip \
 			https://viewfinderpanoramas.org/dem1/N09.zip \
 			https://viewfinderpanoramas.org/dem1/N10.zip \
@@ -311,7 +305,6 @@ build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 			https://viewfinderpanoramas.org/dem1/N19.zip \
 			https://viewfinderpanoramas.org/dem1/N20.zip \
 			https://viewfinderpanoramas.org/dem1/N21.zip \
-			https://viewfinderpanoramas.org/dem1/M01.zip \
 			https://viewfinderpanoramas.org/dem1/M09.zip \
 			https://viewfinderpanoramas.org/dem1/M10.zip \
 			https://viewfinderpanoramas.org/dem1/M11.zip \
@@ -369,7 +362,6 @@ build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 			https://viewfinderpanoramas.org/dem1/I16.zip \
 			https://viewfinderpanoramas.org/dem1/I17.zip \
 			https://viewfinderpanoramas.org/dem1/I18.zip \
-			https://viewfinderpanoramas.org/dem1/H11.zip \
 			https://viewfinderpanoramas.org/dem1/H12.zip \
 			https://viewfinderpanoramas.org/dem1/H13.zip \
 			https://viewfinderpanoramas.org/dem1/H14.zip \
@@ -406,7 +398,7 @@ build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 		&& unzip -j -d ../../../build/Elevation_data -u '*.zip' \
 		&& cd ../../../build/Elevation_data \
 		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename -- {} .hgt)).hgt"' \;
-
+	@touch var/run/elevationDataFolderAndFerrantiUnzipped
 #
 # dsftool
 #
