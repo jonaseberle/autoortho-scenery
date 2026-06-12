@@ -132,7 +132,7 @@ Ortho4XP:
 		&& pip install pip-tools && pip-sync \
 		&& pip install gdal==$$(gdalinfo --version | cut -f 2 -d' ' | cut -f1 -d ',')
 
-build/Elevation_data/:
+build/Elevation_data/: var/run/elevationDataFolderAndFerrantiUnzipped/
 	@echo "Setting up symlinks in order to not care about Ortho4XP's expected directory structure in ./Elevation_data..."
 	@mkdir -p $@ && cd $@ \
 		&& bash -c 'for lat in {-9..9}; do for lon in {-18..18}; do ln -snfr ./ "./$$(printf "%+d0%+03d0" "$$lat" "$$lon")"; done; done'
