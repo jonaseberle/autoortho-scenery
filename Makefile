@@ -403,7 +403,7 @@ build/Elevation_data/:
 			https://viewfinderpanoramas.org/dem1/SL58.zip \
 			https://viewfinderpanoramas.org/dem1/SL59.zip \
 			https://viewfinderpanoramas.org/dem1/SL60.zip \
-		&& unzip -j -d ../../../build/Elevation_data -o '*.zip' \
+		&& unzip -j -d ../../../build/Elevation_data -u '*.zip' \
 		&& cd ../../../build/Elevation_data \
 		&& find -type f -exec sh -c 'mv {} "$$(tr [:lower:] [:upper:] <<< $$(basename -- {} .hgt)).hgt"' \;
 
