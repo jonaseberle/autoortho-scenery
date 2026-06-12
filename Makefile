@@ -292,6 +292,11 @@ build/Elevation_data/:
 			https://viewfinderpanoramas.org/dem1/O18.zip \
 			https://viewfinderpanoramas.org/dem1/O19.zip \
 			https://viewfinderpanoramas.org/dem1/O20.zip \
+			https://viewfinderpanoramas.org/dem1/N01.zip \
+			https://viewfinderpanoramas.org/dem1/N02.zip \
+			https://viewfinderpanoramas.org/dem1/N03.zip \
+			https://viewfinderpanoramas.org/dem1/N04.zip \
+			https://viewfinderpanoramas.org/dem1/N05.zip \
 			https://viewfinderpanoramas.org/dem1/N08.zip \
 			https://viewfinderpanoramas.org/dem1/N09.zip \
 			https://viewfinderpanoramas.org/dem1/N10.zip \
@@ -306,6 +311,7 @@ build/Elevation_data/:
 			https://viewfinderpanoramas.org/dem1/N19.zip \
 			https://viewfinderpanoramas.org/dem1/N20.zip \
 			https://viewfinderpanoramas.org/dem1/N21.zip \
+			https://viewfinderpanoramas.org/dem1/M01.zip \
 			https://viewfinderpanoramas.org/dem1/M09.zip \
 			https://viewfinderpanoramas.org/dem1/M10.zip \
 			https://viewfinderpanoramas.org/dem1/M11.zip \
@@ -363,6 +369,7 @@ build/Elevation_data/:
 			https://viewfinderpanoramas.org/dem1/I16.zip \
 			https://viewfinderpanoramas.org/dem1/I17.zip \
 			https://viewfinderpanoramas.org/dem1/I18.zip \
+			https://viewfinderpanoramas.org/dem1/H11.zip \
 			https://viewfinderpanoramas.org/dem1/H12.zip \
 			https://viewfinderpanoramas.org/dem1/H13.zip \
 			https://viewfinderpanoramas.org/dem1/H14.zip \
@@ -371,6 +378,22 @@ build/Elevation_data/:
 			https://viewfinderpanoramas.org/dem1/H17.zip \
 			https://viewfinderpanoramas.org/dem1/G14.zip \
 			https://viewfinderpanoramas.org/dem1/G17.zip \
+			https://viewfinderpanoramas.org/dem1/G51.zip \
+			https://viewfinderpanoramas.org/dem1/G52.zip \
+			https://viewfinderpanoramas.org/dem1/G54.zip \
+			https://viewfinderpanoramas.org/dem1/G56.zip \
+			https://viewfinderpanoramas.org/dem1/H52.zip \
+			https://viewfinderpanoramas.org/dem1/H54.zip \
+			https://viewfinderpanoramas.org/dem1/I52.zip \
+			https://viewfinderpanoramas.org/dem1/I53.zip \
+			https://viewfinderpanoramas.org/dem1/I54.zip \
+			https://viewfinderpanoramas.org/dem1/J52.zip \
+			https://viewfinderpanoramas.org/dem1/J53.zip \
+			https://viewfinderpanoramas.org/dem1/J54.zip \
+			https://viewfinderpanoramas.org/dem1/K54.zip \
+			https://viewfinderpanoramas.org/dem1/K55.zip \
+			https://viewfinderpanoramas.org/dem1/L54.zip \
+			https://viewfinderpanoramas.org/dem1/L55.zip \
 			https://viewfinderpanoramas.org/dem1/SI59.zip \
 			https://viewfinderpanoramas.org/dem1/SI60.zip \
 			https://viewfinderpanoramas.org/dem1/SJ59.zip \
