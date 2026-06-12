@@ -33,7 +33,9 @@ You should know your way around AutoOrtho's mode of operation.
 When you are unsure, please read 
 [this forum post](https://forums.x-plane.org/forums/topic/303551-when-you-have-a-problem-with-autoortho-%E2%80%93-please-read/).
 
-See the [README.txt](README.txt.template) inside each downloaded package for installation instructions.
+See the [tile README.txt](README.txt.template) inside each downloaded package for installation instructions, information about used 
+elevation data, used software and known issues.
+
 I cannot be held responsible for any problems.
 
 
