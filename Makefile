@@ -439,7 +439,7 @@ var/run/tile_%.elevation: var/cache/elevation/elevation_%.zip Ortho4XP
 	@# Ignores the .zip if empty
 	@if [ -s "var/cache/elevation/elevation_$*.zip" ]; then \
 		printf "[$@] unzipping custom elevation: %s\n" \
-			"$$(unzip -o -d build/Elevation_data/ var/cache/elevation/elevation_$*.zip | tr "\n" " | ")"; \
+			"$$(unzip -DD -o -d build/Elevation_data/ var/cache/elevation/elevation_$*.zip | tr "\n" " | ")"; \
 	else \
 		echo "[$@] no custom elevation for this tile"; \
 	fi
