@@ -60,12 +60,17 @@ Contained fixes:
   Fixes for various European airports from the spectacular Alps HD ZL17 packages by toadlife.
 
 Known issues:
-  eur:
+  eur-e:
     +45+045
+
+  eur-w:
     +66-024: BIIS: rock wall near the airport
-    +62+005, +62+006 (ENAL), +62+007 (ENML), +63+007 (ENKB): had to fill surrounding elevations N63E005.hgt, N63E006.hgt, N63E004.hgt, N64E006.hgt, N64E007.hgt with zeroes
+    +62+005, +62+006 (ENAL), +62+007 (ENML), +63+007 (ENKB):
+      had to fill surrounding elevations N63E004.hgt, N63E005.hgt, N63E006.hgt, N64E006.hgt, N64E007.hgt with zeroes
+      (only water, but there are oil platforms so maybe that's why Ortho4XP choked)
 
   asi:
     +34+132 (Hiroshima, JP): missing elevation data (file I53.zip corrupted on Viewfinderpanorama)
+
 Debugging:
   Find Ortho4XP tile configs and test results in the ./_docs folder.
