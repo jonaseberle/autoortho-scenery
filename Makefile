@@ -25,7 +25,7 @@ ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery_elevation-data/r
 
 ZL?=16
 VARIANT?=o4xp1.40.13+je
-VERSION?=1.3
+VERSION?=1.4
 
 # paranthesis to use in shell commands
 # make chokes on () in shell commands

@@ -14,8 +14,6 @@ NOTE: These scenery packs contain no textures and require
 
 * is an X-Plane 12 base mesh scenery with high resolution elevation data (where available) and bathymetry.
 
-* uses large water masks (you'll see the satellite imagery shine through until 650m from shore), also for inland water bodies (rivers).
-
 * does not contain overlays (roads, forests, houses)! We recommend to use simHeaven X-WORLD (or X-WORLD PRO).
 
 # Download
