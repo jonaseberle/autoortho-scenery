@@ -43,7 +43,6 @@ CP:=)
 #
 # Work on tile lists
 #
-.DEFAULT_GOAL := all
 var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION): bin/genMakefileTilelistRules *_tile_list
 	@mkdir -p var/run/
 	@echo "[$@]"
