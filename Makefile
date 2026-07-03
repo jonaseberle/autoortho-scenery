@@ -4,16 +4,23 @@
 #
 # Quick start:
 #   Generate tile set:
-#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.4 && nice make -j $(nproc --ignore=11) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Generate single tile:
-#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6) z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.4 && nice make z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
 #
-#   Make all:
-#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.2 && nice make -j $(nproc --ignore=6)
+#   Make all tile sets:
+#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.4 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
+#       && find *_tile_list | sed -E "s#(.*)_tile_list#z_ao_\1_zl${ZL}_${VARIANT}_v${VERSION}#" | xargs nice make -j $(nproc --ignore=11) --keep-going
 #
-#   Stats:
+#   Make 7z of all tile sets:
+#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.4 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
+#       && find *_tile_list | sed -E "s#(.*)_tile_list#'${RELEASE_DIR}'/z_ao_\1_zl${ZL}_${VARIANT}_v${VERSION}.7z#" | xargs nice make -j $(nproc --ignore=11) --keep-going
+#
+#   Show stats:
 #     make stats
+#   Update stats each 6min with difference to previous call:
+#     while date; do make statsdiff; sleep 360; done
 
 # remove make builtin rules for more useful make -d 
 MAKEFLAGS += --no-builtin-rules
@@ -26,6 +33,7 @@ ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery_elevation-data/r
 ZL?=16
 VARIANT?=o4xp1.40.13+je
 VERSION?=1.4
+RELEASE_DIR?=/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents
 
 # paranthesis to use in shell commands
 # make chokes on () in shell commands
@@ -111,6 +119,9 @@ z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_
 				|| exit 1; \
 		done
 
+$(RELEASE_DIR)/z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION).7z: z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
+	@echo "[$@]"
+	7z u -bb3 -bd -bso1 -mx=5 -m0=LZMA2 $@ z_ao_$*_zl$(ZL)_$(VARIANT)_v$(VERSION)
 #
 # Ortho4XP setup
 #
