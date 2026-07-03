@@ -488,8 +488,14 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 		&& mkdir -p _docs/ \
 		&& rm -f Data* *.bak "Earth nav data"/*/*.bak \
 		&& ( ls Ortho4XP_*.cfg &>/dev/null && mv Ortho4XP_*.cfg _docs/ || true ) \
-		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
+		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt
 
+build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/osmdata_*.txt: build/OSM_data/
+	@echo [$@]
+	@mkdir -p $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/
+	@cd $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$* \
+		&& mkdir -p _docs/ \
+		&& TZ=UTC find $(CURDIR)/build/OSM_data/*/$* -type f -printf '%TY-%Tm-%TdT%TH:%TM:%.2TSZ %f\n' > _docs/osmdata_$*.txt
 
 build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt: Ortho4XP build/Elevation_data/ var/run/neighboursOfTile_%.elevation
 	@echo [$@]
@@ -505,6 +511,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt:
 		&& . .venv/bin/activate \
 		&& python3 Ortho4XP.py $$COORDS 2>&1 \
 		&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
+		&& ( TZ=UTC find $(CURDIR)/build/OSM_data/*/$* -type f -printf '%TY-%Tm-%TdT%TH:%TM:%.2TSZ %f\n' || true ) > $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/osmdata_$*.txt \
 		&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt; \
 	[ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] || ( \
 		echo "ERROR DETECTED! Retry tile $@ with noroads config."; \
@@ -515,6 +522,7 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt:
 			&& . .venv/bin/activate \
 			&& python3 Ortho4XP.py $$COORDS 2>&1 \
 			&& [ -e "$(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/Earth nav data/"*/$*.dsf ] \
+			&& ( TZ=UTC find $(CURDIR)/build/OSM_data/*/$* -type f -printf '%TY-%Tm-%TdT%TH:%TM:%.2TSZ %f\n' || true ) > $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/osmdata_$*.txt \
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	)
 
