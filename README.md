@@ -36,6 +36,13 @@ elevation data, used software and known issues.
 
 I cannot be held responsible for any problems.
 
+# Changelog
+
+## v1.4
+
+Fixed: 
+* na-s: +39-105 (KDEN) – had no terrain
+
 
 # Todo (maybe...):
 
