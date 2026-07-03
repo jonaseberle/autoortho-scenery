@@ -38,11 +38,7 @@ I cannot be held responsible for any problems.
 
 # Changelog
 
-## v1.4
-
-Fixed: 
-* na-s: +39-105 (KDEN) – had no terrain
-
+See the release descriptions under [releases](https://github.com/jonaseberle/autoortho-scenery/releases).
 
 # Todo (maybe...):
 
