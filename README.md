@@ -40,6 +40,19 @@ I cannot be held responsible for any problems.
 
 See the release descriptions under [releases](https://github.com/jonaseberle/autoortho-scenery/releases).
 
+# Screenshots
+
+## v1.4
+
+![X-Plane12, AutoOrtho, coastline San Salvador, inlet](public/images/v1.4/20260702_015711.jpg)
+![X-Plane12, AutoOrtho, Elbe river, Germany](public/images/v1.4/20260623_120758.jpg)
+![X-Plane12, AutoOrtho, Elbe river, Germany, freeware Let 410](public/images/v1.4/20260623_120439.jpg)
+![X-Plane12, AutoOrtho, Suisse Alps, VSKYLABS Phoenix Air U15](public/images/v1.4/20260616_084753.jpg)
+![X-Plane12, AutoOrtho, Rhine river, OpenSource XPAIS Marine Traffic, freeware Let 410](public/images/v1.4/20260615_032121.jpg)
+![X-Plane12, AutoOrtho, European Alps, ToLiss A321](public/images/v1.4/20260614_052157.jpg)
+![X-Plane12, AutoOrtho, Guatemala, Volcán de Agua (12,300 ft), behind it the Cumbre El Plato (13,000 ft) with Volcán de Fuego (12,400 ft), freeware Let 410](public/images/v1.4/20260611_064439.jpg)
+![X-Plane12, AutoOrtho, EDWI, Jetstream CIS Seneca II](public/images/v1.4/20260606_074938.jpg)
+
 # Todo (maybe...):
 
 Implement many useful O4XP patches by November Lima: https://forums.x-plane.org/profile/5997-november-lima/content/?type=downloads_file
