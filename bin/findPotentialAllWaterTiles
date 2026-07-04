@@ -18,7 +18,7 @@ for dir in $(find ${dirs} -type d -name terrain); do
 		tile="$(echo "$dir" | sed -E "s#.*_(.*)/terrain#\1#")"
 		tileset="$(grep -l "$tile" "$(dirname "$0")/../"*_tile_list | xargs -n1 basename)"
 		echo "  In tilesets: $tileset"
-		coastlineOsm="$(find "$(dirname "$0")/../build/OSM_data/"*/$tile -name "${tile}_coastline.osm.bz2" -exec readlink -f {} \;)"
+		coastlineOsm="$(find "$(dirname "$0")/../build/OSM_data/"*/$tile -name "${tile}_coastline.osm.bz2" -exec readlink -f {} \; 2>/dev/null)"
 		if [ -e "$coastlineOsm" ]; then
 			echo "  Check $coastlineOsm"
 		else
