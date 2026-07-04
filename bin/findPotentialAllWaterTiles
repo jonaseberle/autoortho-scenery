@@ -15,6 +15,13 @@ for dir in $(find ${dirs} -type d -name terrain); do
 		else
 			echo "ERROR: only *_sea_overlay.ter in '$dir'"
 		fi
+		tile="$(echo "$dir" | sed -E "s#.*_(.*)/terrain#\1#")"
+		coastlineOsm="$(find "$(dirname "$0")/../build/OSM_data/"*/$tile -name "${tile}_coastline.osm.bz2" -exec readlink -f {} \;)"
+		if [ -e "$coastlineOsm" ]; then
+			echo "  Check '$coastlineOsm'"
+		else
+			echo "  ('build/OSM_data/*/$tile/${tile}_coastline.osm.bz2' not found)"
+		fi
 	fi
 done
 
