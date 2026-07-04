@@ -40,6 +40,12 @@ I cannot be held responsible for any problems.
 
 See the release descriptions under [releases](https://github.com/jonaseberle/autoortho-scenery/releases).
 
+# Issues
+
+Check if there are open [issues here](https://github.com/jonaseberle/autoortho-scenery/issues), help solving them if you can.
+
+Open a new issue (requires a Github-login) or post to the [forum thread](https://forums.x-plane.org/forums/topic/346802-autoortho-scenery-flightwusel-packages-for-x-plane-12-as-torrent-downloads/).
+
 # Screenshots
 
 ## v1.4
