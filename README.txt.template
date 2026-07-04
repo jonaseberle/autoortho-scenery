@@ -60,6 +60,10 @@ Contained fixes:
   Fixes for various European airports from the spectacular Alps HD ZL17 packages by toadlife.
 
 Known issues:
+  afr-s:
+    +00+032 (HUEN, HUKC, HUKJ, HUNA): no terrain (water)
+    Fix available: https://github.com/jonaseberle/autoortho-scenery/issues/2
+
   asi-s:
     +34+132 (Hiroshima, JP): missing elevation data (file I53.zip corrupted on Viewfinderpanorama)
 
