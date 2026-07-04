@@ -526,16 +526,15 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/generated_by_*.txt:
 			&& cp generated_by.template $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$*/_docs/generated_by_$*.txt \
 	)
 
+# cleanup: be very careful with these. You might lose a lot of work and time!
 clean:
 	@echo "[$@]"
 	-rm -rf build/Tiles/*
 	-rm -rf var/run
-	-rm -rf z_*
 
 distclean: clean
 	@echo "[$@]"
 	-rm -rf Ortho4XP
 	-rm -rf build
 	-rm -rf var
-	-rm -rf z_*
-	-rm -f *_tile_list.*
+	-rm -rf z_ao_*
