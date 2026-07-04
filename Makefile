@@ -485,10 +485,12 @@ build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/checked_by_*.txt: b
 	@cd $(CURDIR)/build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_$* \
 		&& PIPENV_PIPFILE=$(CURDIR)/otv/Pipfile PIPENV_IGNORE_VIRTUALENVS=1 pipenv run \
 			$(CURDIR)/otv/bin/otv --all --ignore-textures --no-progress . \
+		&& $(CURDIR)/bin/findPotentialAllWaterTiles . \
 		&& mkdir -p _docs/ \
 		&& rm -f Data* *.bak "Earth nav data"/*/*.bak \
 		&& ( ls Ortho4XP_*.cfg &>/dev/null && mv Ortho4XP_*.cfg _docs/ || true ) \
-		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt
+		&& cp $(CURDIR)/otv/checked_by.template _docs/checked_by_$*.txt \
+		&& echo "$$(git describe --tags --long):bin/findPotentialAllWaterTiles" >> _docs/checked_by_$*.txt
 
 build/Tiles/zl$(ZL)/$(VARIANT)/v$(VERSION)/zOrtho4XP_%/_docs/osmdata_*.txt: build/OSM_data/
 	@echo [$@]

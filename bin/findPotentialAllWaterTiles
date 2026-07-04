@@ -1,0 +1,21 @@
+#! /bin/bash
+# Looks for terrain/ directories that only contain *_sea_overlay.ter or have no files.
+# These are potential all-water tiles with an OSM "coastline"-problem
+#
+## @arg directories to look in (default: ./build/Tiles)
+# @exit 0 if none are found, 1 if potential problem
+
+dirs="${*:-"./build/Tiles/"}"
+exitCode=0
+for dir in $(find ${dirs} -type d -name terrain); do
+	if [ "$(find "$dir" -name '*.ter' -not -name "*_sea_overlay.ter" | wc -l)" -eq 0 ]; then
+		exitCode=1
+		if [ "$(find "$dir" -type f | wc -l)" -eq 0 ]; then
+			echo "ERROR: no files in '$dir'"
+		else
+			echo "ERROR: only *_sea_overlay.ter in '$dir'"
+		fi
+	fi
+done
+
+exit $exitCode
