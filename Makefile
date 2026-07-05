@@ -101,8 +101,7 @@ z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION): build/Tiles/zl$(ZL)/$(VARIANT)/v$
 
 z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION).zip: z_ao_.single_%_zl$(ZL)_$(VARIANT)_v$(VERSION)
 	@echo "[$@]"
-	@cd z_ao_.single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION) \
-		&& zip -r ../$@ .
+	@zip --recurse-paths -9 $@ z_ao_.single_$*_zl$(ZL)_$(VARIANT)_v$(VERSION)/
 
 z_ao_%_zl$(ZL)_$(VARIANT)_v$(VERSION): %_tile_list var/run/%_zl$(ZL)_$(VARIANT)_v$(VERSION)_tiles var/run/Makefile.tilelistRules_zl$(ZL)_$(VARIANT)_v$(VERSION) README.txt.template
 	@echo "[$@]"
