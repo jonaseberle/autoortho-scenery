@@ -21,6 +21,10 @@
 #     make stats
 #   Update stats each 6min with difference to previous call:
 #     while date; do make statsdiff; sleep 360; done
+#
+# Todo:
+#   keep .mesh
+#   inspect .mesh for max.alt.=0
 
 # remove make builtin rules for more useful make -d 
 MAKEFLAGS += --no-builtin-rules
