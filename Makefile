@@ -4,17 +4,17 @@
 #
 # Quick start:
 #   Generate tile set:
-#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.5 && nice make -j $(nproc --ignore=11) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILESET=eur ZL=16 VARIANT=o4xp1.40.13+je2 VERSION=1.6 && nice make -j $(nproc --ignore=11) --keep-going z_ao_${TILESET}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Generate single tile:
-#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.5 && nice make z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
+#     export TILE=+78+015 ZL=16 VARIANT=o4xp1.40.13+je2 VERSION=1.6 && nice make z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}
 #
 #   Make all tile sets:
-#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.5 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
+#     export ZL=16 VARIANT=o4xp1.40.13+je2 VERSION=1.6 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
 #       && find *_tile_list | sed -E "s#(.*)_tile_list#z_ao_\1_zl${ZL}_${VARIANT}_v${VERSION}#" | xargs nice make -j $(nproc --ignore=11) --keep-going
 #
 #   Make 7z of all tile sets:
-#     export ZL=16 VARIANT=o4xp1.40.13+je VERSION=1.5 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
+#     export ZL=16 VARIANT=o4xp1.40.13+je2 VERSION=1.6 RELEASE_DIR="/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents" \
 #       && find *_tile_list | sed -E "s#(.*)_tile_list#'${RELEASE_DIR}'/z_ao_\1_zl${ZL}_${VARIANT}_v${VERSION}.7z#" | xargs nice make -j $(nproc --ignore=11) --keep-going
 #
 #   Show stats:
@@ -35,8 +35,8 @@ SHELL=/bin/bash
 ELEV_RELEASE_JSON_ENDPOINT?=repos/jonaseberle/autoortho-scenery_elevation-data/releases
 
 ZL?=16
-VARIANT?=o4xp1.40.13+je
-VERSION?=1.5
+VARIANT?=o4xp1.40.13+je2
+VERSION?=1.6
 RELEASE_DIR?=/media/lv_slow/autoOrtho_flightwuselSceneryPacks_torrents
 
 # paranthesis to use in shell commands
