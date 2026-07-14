@@ -1,0 +1,14 @@
+#!/bin/bash
+# Outputs Makefile rules for single tiles from a tilelist.
+
+# saner programming env: these switches turn some bugs into errors
+set -o errexit -o pipefail -o noclobber -o nounset
+
+tileListFile="$1"
+
+tiles=""
+while read -r dsf; do
+	TILE="${dsf/dsf/zip}"
+	tiles="$tiles z_ao_.single_${TILE}_zl${ZL}_${VARIANT}_v${VERSION}"
+done < "$tileListFile"
+echo "$tiles"
